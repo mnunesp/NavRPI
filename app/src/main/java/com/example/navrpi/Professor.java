@@ -10,5 +10,5 @@ public class Professor {
     @PrimaryKey
     private String firstName = "Dan";
 
-    private String lastName;
+    private String lastName = "Weeks";
 }
