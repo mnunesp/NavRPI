@@ -24,19 +24,20 @@ public class MainActivity extends AppCompatActivity {
         showValue = (TextView) findViewById(R.id.floor);
 
     }
-
+    //Up one floor
     public void Increase (View view) {
-        if (floor == 5) return;
+        if (floor == 5) return;  //top floor
         floor++;
         showValue.setText(Integer.toString(floor+1)); //counting starts at 0...
         pdfView = findViewById(R.id.pdfView);
-        pdfView.fromAsset("walker.pdf").pages(floor).load();
+        pdfView.fromAsset("walker.pdf").pages(floor).load(); //displays PDF of current floor
 
     }
+    //Down one floor
     public void Decrease (View view) {
-        if (floor == 0)return;
+        if (floor == 0)return; //bottom floor
         floor--;
-        showValue.setText(Integer.toString(floor+1));
+        showValue.setText(Integer.toString(floor+1)); //counting starts at 0...
         pdfView = findViewById(R.id.pdfView);
         pdfView.fromAsset("walker.pdf").pages(floor).load();
     }
