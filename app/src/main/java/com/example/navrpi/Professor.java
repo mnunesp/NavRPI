@@ -1,5 +1,5 @@
 package com.example.navrpi;
-
+/**
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
@@ -12,3 +12,5 @@ public class Professor {
 
     private String lastName = "Weeks";
 }
+
+ **/
