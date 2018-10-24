@@ -1,15 +1,13 @@
 package com.example.navrpi;
-/**
+
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 
 @Entity
-public class Professor {
+public class Classroom {
 
     @PrimaryKey
-    private String firstName = "Dan";
+    private String number = "113";
 
-    private String lastName = "Weeks";
+    private String building = "Darrin Communication Center";
 }
-
- **/
