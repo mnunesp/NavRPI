@@ -5,35 +5,37 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.os.Handler;
+import android.view.Window;
+import android.view.WindowManager;
 
 public class Startup extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_startup);
+        getSupportActionBar().hide();
+        LogoLauncher logolauncher = new LogoLauncher();
+        logolauncher.start();
+
     }
 
-    public void goto_map(View view){
-        new Handler().post(new Runnable(){
-            @Override
-            public void run(){
-                Intent selectIntent = new Intent(Startup.this, MapsActivity.class);
-                startActivity(selectIntent);
-                finish();
+    private class LogoLauncher extends Thread{
+        public void run(){
+            try{
+                sleep(3000);
+            }catch(InterruptedException e){
+                e.printStackTrace();
             }
-        });
-    }
 
-    public void goto_building(View view){
-        new Handler().post(new Runnable(){
-            @Override
-            public void run(){
-                Intent selectIntent = new Intent(Startup.this, buildings.class);
-                startActivity(selectIntent);
-                finish();
-            }
-        });
+            Intent intent = new Intent(Startup.this, MainActivity.class);
+            startActivity(intent);
+            Startup.this.finish();
+        }
     }
 
 
