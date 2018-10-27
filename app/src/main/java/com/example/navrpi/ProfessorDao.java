@@ -1,5 +1,5 @@
 package com.example.navrpi;
-/**
+
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Query;
 
@@ -16,4 +16,3 @@ public interface ProfessorDao {
 
 }
 
- **/
