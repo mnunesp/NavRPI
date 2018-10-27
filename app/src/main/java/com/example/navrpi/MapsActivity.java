@@ -4,6 +4,8 @@ package com.example.navrpi;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.nfc.Tag;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -25,6 +27,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private static final String FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
     private static final String COURSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
+    private static final int LOCATION_PERMISSION_REQUEST_CODE = 1234;
 
     //VARS
     private Boolean mLocationPermissionsGranted = false;
@@ -47,10 +50,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         if(ContextCompat.checkSelfPermission(this.getApplicationContext(), FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
             if(ContextCompat.checkSelfPermission(this.getApplicationContext(), COURSE_LOCATION) == PackageManager.PERMISSION_GRANTED){
-
+                mLocationPermissionsGranted = true;
+            }
+            else {
+                ActivityCompat.requestPermissions(this, permissions, LOCATION_PERMISSION_REQUEST_CODE);
             }
         }
     }
+
+    @Override
+    public void onRequestPermissionResult(int requestCode, @NonNull String[] permissions, @NonNull int[] granResults){
+        mLocationPermissionsGranted = false;
+    }
+
 
     /**
      * Manipulates the map once available.
@@ -66,9 +78,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
 
         // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in RPI"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        LatLng rpi = new LatLng(-34, 151);
+        mMap.addMarker(new MarkerOptions().position(rpi).title("Marker in RPI"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(rpi));
     }
 
 }
