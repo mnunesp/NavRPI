@@ -1,8 +1,11 @@
 package com.example.navrpi;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Picture;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -66,7 +69,9 @@ public class buildings extends AppCompatActivity {
                         System.out.println("NodeXPos: " + nodedrawpositionx + " NodeYPos: " + nodedrawpositiony);
                         System.out.println("Dist to Right: " + (pageWidth - nodedrawpositionx) + " Dist to Bottom: " + (pageHeight - nodedrawpositiony));
 
+                        Bitmap temp_bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.restroom_icon);
                         canvas.drawCircle(nodedrawpositionx, nodedrawpositiony, noderadius, p);
+                        canvas.drawBitmap(temp_bitmap, nodedrawpositionx, nodedrawpositiony, p);
                     }
                 }
 
