@@ -1,6 +1,8 @@
 package com.example.navrpi;
 
 
+import android.Manifest;
+import android.nfc.Tag;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,6 +19,10 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
+    private static final String Tag = "MapsActivity";
+
+    private static final String[] 
+
     private GoogleMap mMap;
 
     @Override
@@ -29,6 +35,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mapFragment.getMapAsync(this);
     }
 
+    private void getLocationPermission(){
+        String[] permissions =  {Manifest.permission.ACCESS_FINE_LOCATION},
+        Manifest.permission.ACCESS_COARSE_LOCATION}
+    };
 
     /**
      * Manipulates the map once available.

@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -49,27 +50,26 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void init(){
-        
-    }
-    public void goto_map(View view){
-        new Handler().post(new Runnable(){
-        @Override
-        public void run(){
-            Intent selectIntent = new Intent(MainActivity.this, MapsActivity.class);
-            startActivity(selectIntent);
-            MainActivity.this.finish();
-         }
-        });
-    }
-
-    public void goto_building(View view){
-        new Handler().post(new Runnable(){
+        Button btnMap = (Button) findViewById(R.id.btnMap);
+        Button btnBuilding = (Button) findViewById(R.id.btnBuilding);
+        btnMap.setOnClickListener(new View.OnClickListener(){
             @Override
-            public void run(){
-                Intent selectIntent = new Intent(MainActivity.this, buildings.class);
-                startActivity(selectIntent);
+            public void onClick(View view){
+                Intent intent = new Intent(MainActivity.this, MapsActivity.class);
+                startActivity(intent);
                 MainActivity.this.finish();
             }
         });
+
+        btnBuilding.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                Intent intent = new Intent(MainActivity.this, buildings.class);
+                startActivity(intent);
+                MainActivity.this.finish();
+            }
+        });
+
     }
 }
+
