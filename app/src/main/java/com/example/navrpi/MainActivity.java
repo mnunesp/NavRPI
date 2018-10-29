@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view){
                 Intent intent = new Intent(MainActivity.this, MapsActivity.class);
                 startActivity(intent);
-                MainActivity.this.finish();
+                //MainActivity.this.finish();
             }
         });
 
@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view){
                 Intent intent = new Intent(MainActivity.this, buildings.class);
                 startActivity(intent);
-                MainActivity.this.finish();
+                //MainActivity.this.finish();
             }
         });
 

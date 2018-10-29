@@ -15,7 +15,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
-        android:text="SAL HAS THE BOMB"
+        android:text="NAVRPI"
         android:textColor="#aaaaaa"
         android:textSize="40dp"
         app:layout_constraintBottom_toBottomOf="parent"
