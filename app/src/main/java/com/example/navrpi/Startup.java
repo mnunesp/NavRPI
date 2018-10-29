@@ -18,7 +18,7 @@ public class Startup extends AppCompatActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_startup);
-        getSupportActionBar().hide();
+        //getSupportActionBar().hide();
         LogoLauncher logolauncher = new LogoLauncher();
         logolauncher.start();
 
