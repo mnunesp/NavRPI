@@ -13,6 +13,8 @@ public class ProfessorAsyncPopulate extends AsyncTask<Void, Void, Void> {
     @Override
     protected Void doInBackground(final Void... params){
         Professor DanWeeks = new Professor();
+        DanWeeks.setFirstName("Dan");
+        DanWeeks.setLastName("Weeks");
         pDao.insert(DanWeeks);
         return null;
     }
