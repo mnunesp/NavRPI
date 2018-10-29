@@ -46,8 +46,7 @@ public class buildings extends AppCompatActivity {
                 System.out.println("Testing");
                 System.out.println("PageWidth: " + pageWidth + " pageHeight: " + pageHeight + " Page: " + displayedPage);
                 Paint p = new Paint();
-                p.setColor(Color.RED);
-
+                //ClassroomDao cdao = ClassroomDatabase.getDatabase(getApplicationContext()).classroomDao();
 
                 for (int i = 0; i < nodes.size(); ++i) {
                     if (nodes.get(i).getFloor()==floor) {

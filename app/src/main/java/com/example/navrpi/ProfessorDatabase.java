@@ -15,7 +15,7 @@ public abstract class ProfessorDatabase extends RoomDatabase {
 
     static ProfessorDatabase getDatabase( final Context context) {
         if (INSTANCE == null) {
-            synchronized (ClassroomDatabase.class) {
+            synchronized (ProfessorDatabase.class) {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(), ProfessorDatabase.class, "professor_database").build();
                 }

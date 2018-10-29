@@ -1,11 +1,20 @@
 package com.example.navrpi;
 
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.NonNull;
+
+@Entity
 public class MapNode {
 
     private int x;
     private int y;
     private int floor;
     private String building;
+
+    /*@PrimaryKey(autoGenerate = true)
+    @NonNull
+    private int id;*/
 
     MapNode() {
         x = 0;
@@ -30,15 +39,36 @@ public class MapNode {
         return x;
     }
 
+    public void setX(int x) {
+        this.x = x;
+    }
+
     public int getY() {
         return y;
+    }
+
+    public void setY(int y) {
+        this.y = y;
     }
 
     public int getFloor() {
         return floor;
     }
 
+    public void setFloor(int floor) {
+        this.floor = floor;
+    }
+
     public String getBuilding() {
         return building;
     }
+
+    public void setBuilding(String building) {
+        this.building = building;
+    }
+
+ /*   @NonNull
+    public int getId() {
+        return id;
+    }*/
 }
