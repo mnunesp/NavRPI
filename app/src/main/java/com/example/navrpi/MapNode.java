@@ -12,9 +12,9 @@ public class MapNode {
     private int floor;
     private String building;
 
-    /*@PrimaryKey(autoGenerate = true)
+    @PrimaryKey(autoGenerate = true)
     @NonNull
-    private int id;*/
+    private int id;
 
     MapNode() {
         x = 0;
@@ -67,8 +67,12 @@ public class MapNode {
         this.building = building;
     }
 
- /*   @NonNull
+    @NonNull
     public int getId() {
         return id;
-    }*/
+    }
+
+    public void setId(@NonNull int id) {
+        this.id = id;
+    }
 }
