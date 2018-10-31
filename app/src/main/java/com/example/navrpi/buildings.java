@@ -16,6 +16,7 @@ import com.github.barteksc.pdfviewer.listener.OnDrawListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Map;
 
 public class buildings extends AppCompatActivity {
 
@@ -31,10 +32,29 @@ public class buildings extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_buildings);
 
-        MapNode startNodes[] = new MapNode[] {new MapNode(525,250, 3, "Walker"), new MapNode(525,625, 3, "Walker"),
-                new MapNode(1025,625, 3, "Walker"),new MapNode(665,350, 2, "Walker"),
-                new MapNode(665,650, 2, "Walker"), new MapNode(1100,650, 2, "Walker")};
-        nodes.addAll(Arrays.asList(startNodes));
+        // TODO: Query database for nodes and connections
+        // Initial setup of nodes and connections. Hard coded for now
+        MapNode hallwayNodes[] = new MapNode[] {new MapNode(450,200, 3, "Walker"), new MapNode(450,550, 3, "Walker"),
+                new MapNode(950,550, 3, "Walker"), new MapNode(950,650, 3, "Walker"),
+                new MapNode(1000,650, 3, "Walker")};
+
+        for (int i = 0; i < hallwayNodes.length; ++i) {
+            hallwayNodes[i].setNodeType("hallway");
+            if (i != hallwayNodes.length -1)
+                hallwayNodes[i].addAdjacentNode(hallwayNodes[i+1]);
+
+        }
+
+        //Bathroom nodes
+        MapNode bathroomNodes[] = new MapNode[] {new MapNode(350,650, 3, "Walker")};
+        bathroomNodes[0].addAdjacentNode(hallwayNodes[1]);
+
+        for (int i = 0; i < bathroomNodes.length; ++i) {
+            bathroomNodes[i].setNodeType("bathroom");
+        }
+
+        nodes.addAll(Arrays.asList(hallwayNodes));
+        nodes.addAll(Arrays.asList(bathroomNodes));
 
         showValue = (TextView) findViewById(R.id.floor);
 
@@ -48,30 +68,46 @@ public class buildings extends AppCompatActivity {
             public void onLayerDrawn(Canvas canvas, float pageWidth, float pageHeight, int displayedPage) {
                 System.out.println("Testing");
                 System.out.println("PageWidth: " + pageWidth + " pageHeight: " + pageHeight + " Page: " + displayedPage);
-                Paint p = new Paint();
-                p.setColor(Color.RED);
+                Paint dotcolor = new Paint();
+                Paint linecolor = new Paint();
 
+                dotcolor.setColor(Color.RED);
+                linecolor.setColor(Color.RED);
+                linecolor.setStrokeWidth(10);
 
+                // Draw each node
                 for (int i = 0; i < nodes.size(); ++i) {
                     if (nodes.get(i).getFloor()==floor) {
 
-                        System.out.println("pdfView PositionOffSet: " + pdfView.getPositionOffset());
-                        System.out.println("CurrentXOffset: " + pdfView.getCurrentXOffset() +
-                                " CurrentYOffset: " + pdfView.getCurrentYOffset());
-
+                        // Calculate node positions based on current zoom
                         float pdfzoom = pdfView.getZoom();
 
                         float nodedrawpositionx = nodes.get(i).getX() * pdfzoom;
                         float nodedrawpositiony = nodes.get(i).getY() * pdfzoom;
                         float noderadius = 20;
 
-                        System.out.println("Zoom: " + pdfView.getZoom());
-                        System.out.println("NodeXPos: " + nodedrawpositionx + " NodeYPos: " + nodedrawpositiony);
-                        System.out.println("Dist to Right: " + (pageWidth - nodedrawpositionx) + " Dist to Bottom: " + (pageHeight - nodedrawpositiony));
 
-                        Bitmap temp_bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.restroom_icon);
-                        canvas.drawCircle(nodedrawpositionx, nodedrawpositiony, noderadius, p);
-                        canvas.drawBitmap(temp_bitmap, nodedrawpositionx, nodedrawpositiony, p);
+                        // TODO: Move all this to separate function
+                        // Draw icons based on node type
+                        if (nodes.get(i).getNodeType().equals("hallway")) {
+                            canvas.drawCircle(nodedrawpositionx, nodedrawpositiony, noderadius, dotcolor);
+
+                        } else if (nodes.get(i).getNodeType().equals("bathroom")) {
+                            Bitmap temp_bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.restroom_icon_red);
+                            // icon 100px x 100px, -50 to center
+                            canvas.drawBitmap(temp_bitmap, nodedrawpositionx - 50, nodedrawpositiony - 50, dotcolor);
+                        }
+
+                        // Draw lines between connecting nodes
+                        ArrayList<MapNode> adjacentNodes = nodes.get(i).getAdjacentNodes();
+                        for (int q = 0; q < nodes.get(i).getNumAdjacent(); ++q) {
+
+                            float adjacentposx = adjacentNodes.get(q).getX() * pdfzoom;
+                            float adjacentposy = adjacentNodes.get(q).getY() * pdfzoom;
+
+                            canvas.drawLine(nodedrawpositionx, nodedrawpositiony, adjacentposx, adjacentposy, linecolor);
+                        }
+
                     }
                 }
 
