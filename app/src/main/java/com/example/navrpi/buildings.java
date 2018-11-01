@@ -13,6 +13,7 @@ import com.github.barteksc.pdfviewer.listener.OnDrawListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class buildings extends AppCompatActivity {
 
@@ -21,7 +22,7 @@ public class buildings extends AppCompatActivity {
     TextView showValue;
     //String[] floors = {"walkerlab2000.pdf","walkerlab3000.pdf","walkerlab6000.pdf"};
     int floor = 2;
-    ArrayList<MapNode> nodes = new ArrayList<>();
+    List<MapNode> nodes = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +33,8 @@ public class buildings extends AppCompatActivity {
                 new MapNode(1025,625, 3, "Walker"),new MapNode(665,350, 2, "Walker"),
                 new MapNode(665,650, 2, "Walker"), new MapNode(1100,650, 2, "Walker")};
         nodes.addAll(Arrays.asList(startNodes));
+        //NodeDao nDao = NodeDatabase.getDatabase(getApplicationContext()).nodeDao();
+        //nodes = nDao.searchBuildFloor("Walker", 3);
 
         showValue = (TextView) findViewById(R.id.floor);
 

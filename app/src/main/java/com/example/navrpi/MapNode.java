@@ -7,14 +7,16 @@ import android.support.annotation.NonNull;
 @Entity
 public class MapNode {
 
+    @PrimaryKey
+    @NonNull
+    private String building;
+
     private int x;
     private int y;
     private int floor;
-    private String building;
 
-    @PrimaryKey(autoGenerate = true)
     @NonNull
-    private int id;
+    private static int id =0;
 
     MapNode() {
         x = 0;
@@ -26,6 +28,7 @@ public class MapNode {
         y = yi;
         floor = 0;
         building = "";
+        this.id = id++;
     }
 
     MapNode(int xi, int yi, int fl, String bld) {
