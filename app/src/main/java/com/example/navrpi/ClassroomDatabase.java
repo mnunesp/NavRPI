@@ -16,7 +16,7 @@ public abstract class ClassroomDatabase extends RoomDatabase {
         if (INSTANCE == null) {
             synchronized (ClassroomDatabase.class) {
                 if (INSTANCE == null) {
-                    INSTANCE = Room.databaseBuilder(context.getApplicationContext(), ClassroomDatabase.class, "classroom_database").build();
+                    INSTANCE = Room.databaseBuilder(context.getApplicationContext(), ClassroomDatabase.class, "classroom_database").fallbackToDestructiveMigration().allowMainThreadQueries().addCallback(sRoomDatabaseCallback).build();
                 }
             }
         }

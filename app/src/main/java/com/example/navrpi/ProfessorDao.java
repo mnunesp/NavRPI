@@ -18,5 +18,8 @@ public interface ProfessorDao {
     @Query("SELECT * FROM professor")
     List<Professor> getAllProfessors();
 
+    @Query("DELETE from professor")
+    void deleteAll();
+
 }
 

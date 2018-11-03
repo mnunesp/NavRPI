@@ -9,14 +9,16 @@ public class MapNode {
 
     @PrimaryKey
     @NonNull
+    private String id;
+
+    @NonNull
     private String building;
 
     private int x;
     private int y;
     private int floor;
 
-    @NonNull
-    private static int id =0;
+
 
     MapNode() {
         x = 0;
@@ -27,8 +29,7 @@ public class MapNode {
         x = xi;
         y = yi;
         floor = 0;
-        building = "";
-        this.id = id++;
+        id = building + Integer.toString(floor) + Integer.toString(x) + Integer.toString(y);
     }
 
     MapNode(int xi, int yi, int fl, String bld) {
@@ -36,6 +37,7 @@ public class MapNode {
         y = yi;
         floor = fl;
         building = bld;
+        id = bld + Integer.toString(fl) + Integer.toString(xi) + Integer.toString(yi);
     }
 
     public int getX() {
@@ -71,11 +73,13 @@ public class MapNode {
     }
 
     @NonNull
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(@NonNull int id) {
+    public void setId(@NonNull String id) {
         this.id = id;
     }
+
+
 }

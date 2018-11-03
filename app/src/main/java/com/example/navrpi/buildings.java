@@ -29,12 +29,13 @@ public class buildings extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_buildings);
 
-        MapNode startNodes[] = new MapNode[] {new MapNode(525,250, 3, "Walker"), new MapNode(525,625, 3, "Walker"),
-                new MapNode(1025,625, 3, "Walker"),new MapNode(665,350, 2, "Walker"),
-                new MapNode(665,650, 2, "Walker"), new MapNode(1100,650, 2, "Walker")};
-        nodes.addAll(Arrays.asList(startNodes));
-        //NodeDao nDao = NodeDatabase.getDatabase(getApplicationContext()).nodeDao();
-        //nodes = nDao.searchBuildFloor("Walker", 3);
+        //MapNode startNodes[] = new MapNode[] {new MapNode(525,250, 3, "Walker"), new MapNode(525,625, 3, "Walker"),
+          //      new MapNode(1025,625, 3, "Walker"),new MapNode(665,350, 2, "Walker"),
+            //    new MapNode(665,650, 2, "Walker"), new MapNode(1100,650, 2, "Walker")};
+        //nodes.addAll(Arrays.asList(startNodes));
+        NodeDao nDao = NodeDatabase.getDatabase(getApplicationContext()).nodeDao();
+        //for (int i = 0; i < 6; i++) nDao.insert(startNodes[i]);
+        nodes = nDao.getAllNodes();
 
         showValue = (TextView) findViewById(R.id.floor);
 
@@ -46,11 +47,9 @@ public class buildings extends AppCompatActivity {
         OnDrawListener DrawL = new OnDrawListener() {
             @Override
             public void onLayerDrawn(Canvas canvas, float pageWidth, float pageHeight, int displayedPage) {
-                System.out.println("Testing");
+                System.out.println("Testing" + "\t" + nodes.size());
                 System.out.println("PageWidth: " + pageWidth + " pageHeight: " + pageHeight + " Page: " + displayedPage);
                 Paint p = new Paint();
-                //ClassroomDao cdao = ClassroomDatabase.getDatabase(getApplicationContext()).classroomDao();
-
                 for (int i = 0; i < nodes.size(); ++i) {
                     if (nodes.get(i).getFloor()==floor) {
 

@@ -6,7 +6,7 @@ import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 
-@Database(entities = {MapNode.class}, version = 1)
+@Database(entities = {MapNode.class}, version = 2)
 public abstract class NodeDatabase extends RoomDatabase {
     public abstract NodeDao nodeDao();
 
@@ -16,14 +16,14 @@ public abstract class NodeDatabase extends RoomDatabase {
         if (INSTANCE == null) {
             synchronized (NodeDatabase.class) {
                 if (INSTANCE == null) {
-                    INSTANCE = Room.databaseBuilder(context.getApplicationContext(), NodeDatabase.class, "node_database").build();
+                    INSTANCE = Room.databaseBuilder(context.getApplicationContext(), NodeDatabase.class, "node_database").fallbackToDestructiveMigration().allowMainThreadQueries().addCallback(sRoomDatabaseCallback).build();
                 }
             }
         }
         return INSTANCE;
     }
 
-    private static NodeDatabase.Callback sRoomDatabaseCallback =
+    private static RoomDatabase.Callback sRoomDatabaseCallback =
             new RoomDatabase.Callback(){
 
                 @Override

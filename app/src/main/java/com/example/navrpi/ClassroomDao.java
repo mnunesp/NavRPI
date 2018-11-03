@@ -17,4 +17,7 @@ public interface ClassroomDao {
 
     @Query("SELECT * FROM classroom")
     List<Classroom> getAllRooms();
+
+    @Query("DELETE from classroom")
+    void deleteAll();
 }

@@ -10,9 +10,15 @@ import java.util.List;
 @Dao
 public interface NodeDao {
 
-    @Query("SELECT * FROM mapNode WHERE 'floor' = :flor AND 'building' LIKE :build")
-    List<MapNode> searchBuildFloor(String build, int flor);
+    @Query("SELECT * FROM mapNode WHERE building LIKE :build")
+    List<MapNode> searchBuildFloor(String build);
 
     @Insert
     void insert(MapNode nod);
+
+    @Query("SELECT * FROM mapNode")
+    List<MapNode> getAllNodes();
+
+    @Query("DELETE FROM mapNode")
+    void DeleteAll();
 }

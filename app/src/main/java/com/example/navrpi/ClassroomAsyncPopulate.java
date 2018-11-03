@@ -12,6 +12,7 @@ public class ClassroomAsyncPopulate extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected Void doInBackground(final Void... params){
+        cDao.deleteAll();
         Classroom DCC113 = new Classroom();
         DCC113.setBuilding("DCC");
         DCC113.setNumber("113");

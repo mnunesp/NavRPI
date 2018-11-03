@@ -17,7 +17,7 @@ public abstract class ProfessorDatabase extends RoomDatabase {
         if (INSTANCE == null) {
             synchronized (ProfessorDatabase.class) {
                 if (INSTANCE == null) {
-                    INSTANCE = Room.databaseBuilder(context.getApplicationContext(), ProfessorDatabase.class, "professor_database").build();
+                    INSTANCE = Room.databaseBuilder(context.getApplicationContext(), ProfessorDatabase.class, "professor_database").fallbackToDestructiveMigration().allowMainThreadQueries().addCallback(sRoomDatabaseCallback).build();
                 }
             }
         }
