@@ -15,8 +15,11 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,6 +32,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -49,6 +53,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     //Widgets
     private EditText mSearchText;
+    private ImageView mGps;
 
     //VARS
     private Boolean mLocationPermissionsGranted = false;
@@ -61,6 +66,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         setContentView(R.layout.activity_maps);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         mSearchText = (EditText) findViewById(R.id.input_search);
+        mGps = (ImageView) findViewById(R.id.ic_gps);
+
         getLocationPermission();
     }
 
@@ -81,6 +88,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 return false;
             }
         });
+        mGps.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(Tag, "onClick: clicked gps icon");
+                getDeviceLocation();
+            }
+        });
+
+        hideSoftKeyboard();
     }
 
     private void geoLocate(){
@@ -100,6 +116,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             Log.d(Tag, "geoLocate: found a location " + address.toString());
             //Toast.makeText(this, address.toString(), Toast.LENGTH_SHORT).show();
+            moveCamera(new LatLng(address.getLatitude(),address.getLongitude()), DEFAULT_ZOOM, address.getAddressLine(0));
         }
     }
 
@@ -117,7 +134,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             Log.d(Tag, "onComplete: found location");
                             Location currentLocation = (Location) task.getResult();
 
-                            moveCamera(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()), DEFAULT_ZOOM);
+                            moveCamera(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()), DEFAULT_ZOOM, "My_location");
                         } else {
                             Log.d(Tag, "onComplete: current location is null");
                             Toast.makeText(MapsActivity.this, "unable to get current location", Toast.LENGTH_SHORT).show();
@@ -130,9 +147,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
-    private void moveCamera(LatLng latLng, float zoom) {
+    private void moveCamera(LatLng latLng, float zoom, String title) {
         Log.d(Tag, "moveCamera :moving the camera to: lat: " + latLng.latitude + ", lng: " + latLng.longitude);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
+
+        if(!title.equals("My Location")){
+            MarkerOptions options = new MarkerOptions()
+                    .position(latLng)
+                    .title(title);
+            mMap.addMarker(options);
+            hideSoftKeyboard();
+        }
+
+
     }
 
     private void initMap() {
@@ -214,6 +241,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
         //mMap.addMarker(new MarkerOptions().position(rpi).title("Marker in RPI"));
         //mMap.moveCamera(CameraUpdateFactory.newLatLng(rpi));
+    }
+
+    private void hideSoftKeyboard(){
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
     }
 
 }
