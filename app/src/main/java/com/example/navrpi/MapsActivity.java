@@ -5,6 +5,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -37,10 +38,12 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolygonOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
@@ -65,6 +68,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     //VARS
     private Boolean mLocationPermissionsGranted = false;
+    private static final Double lat = 42.730052689755404;
+    private static final Double lng = -73.67669504076449;
+    private static final LatLng union = new LatLng(lat,lng);
 
     private GoogleMap mMap;
 
@@ -91,6 +97,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         || event.getAction() == event.KEYCODE_ENTER) {
 
                     //execute search method
+                    hideSoftKeyboard();
                     geoLocate();
                 }
 
@@ -268,17 +275,30 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         } catch (Resources.NotFoundException e) {
             Log.e(Tag, "Can't find style. Error: ", e);}
 
-        // Add a marker in Sydney and move the camera
+        // Add at my location
         if (mLocationPermissionsGranted) {
-            getDeviceLocation();
+            //getDeviceLocation();
+            moveCamera(union, DEFAULT_ZOOM, "RPI_UNION");
 
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                     != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this,
                     Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 return;
             }
+            UiSettings uiSettings = googleMap.getUiSettings();
+            uiSettings.setCompassEnabled(true);
             mMap.setMyLocationEnabled(true);
             mMap.getUiSettings().setMyLocationButtonEnabled(false);
+
+            Double lat, lng; lat = 42.730052689755404; lng = -73.67669504076449;
+            //LatLng union = new LatLng(lat,lng);
+            LatLng union1 = new LatLng(lat,lng);
+            LatLng union2 = new LatLng(lat+.001,lng);
+            LatLng union3 = new LatLng(lat,lng+.001);
+            LatLng union4 = new LatLng(lat+.001,lng+.001);
+
+            mMap.addPolygon(new PolygonOptions().add(union1).add(union2).add(union3).add(union4).fillColor(Color.argb(80, 0,0,225)).strokeColor(Color.BLUE).strokeWidth(5));
+
             init();
         }
         //mMap.addMarker(new MarkerOptions().position(rpi).title("Marker in RPI"));

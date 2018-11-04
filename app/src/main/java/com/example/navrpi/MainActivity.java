@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
         btnMap.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
+                Log.d(TAG, "Maps pushed");
                 Intent intent = new Intent(MainActivity.this, MapsActivity.class);
                 startActivity(intent);
                 //MainActivity.this.finish();
