@@ -18,7 +18,9 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -54,6 +56,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     //Widgets
     private EditText mSearchText;
     private ImageView mGps;
+    private ImageButton mMenu;
 
     //VARS
     private Boolean mLocationPermissionsGranted = false;
@@ -67,6 +70,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         mSearchText = (EditText) findViewById(R.id.input_search);
         mGps = (ImageView) findViewById(R.id.ic_gps);
+        mMenu = (ImageButton) findViewById(R.id.menuButton);
 
         getLocationPermission();
     }
@@ -94,6 +98,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 Log.d(Tag, "onClick: clicked gps icon");
                 getDeviceLocation();
             }
+        });
+        mMenu.setOnClickListener({
+                Log.d(Tag, "onClick: click on Menu");
+
         });
 
         hideSoftKeyboard();
