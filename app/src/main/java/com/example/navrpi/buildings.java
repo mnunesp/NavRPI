@@ -5,18 +5,17 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Picture;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+import android.content.Intent;
 
 import com.github.barteksc.pdfviewer.PDFView;
 import com.github.barteksc.pdfviewer.listener.OnDrawListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Map;
 
 public class buildings extends AppCompatActivity {
 
@@ -34,87 +33,56 @@ public class buildings extends AppCompatActivity {
 
         // TODO: Query database for nodes and connections
         // Initial setup of nodes and connections. Hard coded for now
-        MapNode hallwayNodes[] = new MapNode[] {new MapNode(450,200, 3, "Walker"), new MapNode(450,550, 3, "Walker"),
-                new MapNode(950,550, 3, "Walker"), new MapNode(950,650, 3, "Walker"),
-                new MapNode(1000,650, 3, "Walker")};
+        ArrayList<MapNode> hallwayNodes = new ArrayList<>();
 
-        for (int i = 0; i < hallwayNodes.length; ++i) {
-            hallwayNodes[i].setNodeType("hallway");
-            if (i != hallwayNodes.length -1)
-                hallwayNodes[i].addAdjacentNode(hallwayNodes[i+1]);
+        MapNode node1 = new MapNode(450,200, 3, "Walker");
+        MapNode node2 = new MapNode(450,550, 3, "Walker");
+        MapNode node3 = new MapNode(950,550, 3, "Walker");
+        MapNode node4 = new MapNode(950,650, 3, "Walker");
+        MapNode node5 = new MapNode(1000,650, 3, "Walker");
 
-        }
+        node1.addAdjacentNode(node2,1);
+        node1.addAdjacentNode(node3,1);
+        node2.addAdjacentNode(node3,1);
+        node3.addAdjacentNode(node4,1);
+        node4.addAdjacentNode(node5,1);
+
+        node1.setNodeType("hallway");
+        node2.setNodeType("hallway");
+        node3.setNodeType("hallway");
+        node4.setNodeType("hallway");
+        node5.setNodeType("hallway");
+
+        hallwayNodes.add(node1);
+        hallwayNodes.add(node2);
+        hallwayNodes.add(node3);
+        hallwayNodes.add(node4);
+        hallwayNodes.add(node5);
+
 
         //Bathroom nodes
         MapNode bathroomNodes[] = new MapNode[] {new MapNode(350,650, 3, "Walker")};
-        bathroomNodes[0].addAdjacentNode(hallwayNodes[1]);
+        bathroomNodes[0].addAdjacentNode(hallwayNodes.get(1),1);
 
         for (int i = 0; i < bathroomNodes.length; ++i) {
             bathroomNodes[i].setNodeType("bathroom");
         }
 
-        nodes.addAll(Arrays.asList(hallwayNodes));
+        nodes.addAll(hallwayNodes);
         nodes.addAll(Arrays.asList(bathroomNodes));
+
+        pdfView = findViewById(R.id.pdfView);
+        pdfView.fromAsset("walker.pdf").pages(floor).enableDoubletap(false).load();
 
         showValue = (TextView) findViewById(R.id.floor);
 
     }
 
-
+    // Renders the current floor plan and nodes
     private void Draw() {
 
-        OnDrawListener DrawL = new OnDrawListener() {
-            @Override
-            public void onLayerDrawn(Canvas canvas, float pageWidth, float pageHeight, int displayedPage) {
-                System.out.println("Testing");
-                System.out.println("PageWidth: " + pageWidth + " pageHeight: " + pageHeight + " Page: " + displayedPage);
-                Paint dotcolor = new Paint();
-                Paint linecolor = new Paint();
-
-                dotcolor.setColor(Color.RED);
-                linecolor.setColor(Color.RED);
-                linecolor.setStrokeWidth(10);
-
-                // Draw each node
-                for (int i = 0; i < nodes.size(); ++i) {
-                    if (nodes.get(i).getFloor()==floor) {
-
-                        // Calculate node positions based on current zoom
-                        float pdfzoom = pdfView.getZoom();
-
-                        float nodedrawpositionx = nodes.get(i).getX() * pdfzoom;
-                        float nodedrawpositiony = nodes.get(i).getY() * pdfzoom;
-                        float noderadius = 20;
-
-
-                        // TODO: Move all this to separate function
-                        // Draw icons based on node type
-                        if (nodes.get(i).getNodeType().equals("hallway")) {
-                            canvas.drawCircle(nodedrawpositionx, nodedrawpositiony, noderadius, dotcolor);
-
-                        } else if (nodes.get(i).getNodeType().equals("bathroom")) {
-                            Bitmap temp_bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.restroom_icon_red);
-                            // icon 100px x 100px, -50 to center
-                            canvas.drawBitmap(temp_bitmap, nodedrawpositionx - 50, nodedrawpositiony - 50, dotcolor);
-                        }
-
-                        // Draw lines between connecting nodes
-                        ArrayList<MapNode> adjacentNodes = nodes.get(i).getAdjacentNodes();
-                        for (int q = 0; q < nodes.get(i).getNumAdjacent(); ++q) {
-
-                            float adjacentposx = adjacentNodes.get(q).getX() * pdfzoom;
-                            float adjacentposy = adjacentNodes.get(q).getY() * pdfzoom;
-
-                            canvas.drawLine(nodedrawpositionx, nodedrawpositiony, adjacentposx, adjacentposy, linecolor);
-                        }
-
-                    }
-                }
-
-
-            }
-        };
-
+        Drawer d = new Drawer(buildings.this, nodes, pdfView);
+        OnDrawListener DrawL = d.createDrawListener(floor);
 
         pdfView.fromAsset("walker.pdf").pages(floor).enableDoubletap(false).onDraw(DrawL).load();
 
@@ -127,7 +95,7 @@ public class buildings extends AppCompatActivity {
         if (floor == 5) return;
         floor++;
         showValue.setText(Integer.toString(floor+1)); //counting starts at 0...
-        pdfView = findViewById(R.id.pdfView);
+        //pdfView = findViewById(R.id.pdfView);
         Draw();
 
 
@@ -137,21 +105,20 @@ public class buildings extends AppCompatActivity {
         if (floor == 0)return; //bottom floor
         floor--;
         showValue.setText(Integer.toString(floor+1)); //counting starts at 0...
-        pdfView = findViewById(R.id.pdfView);
+        //pdfView = findViewById(R.id.pdfView);
         Draw();
 
     }
 
 
+    public void PreviewRoute (View view) {
+
+        Intent intent = new Intent(buildings.this, RoutePreviewActivity.class);
+        intent.putExtra("building_name", "walker");
+        //intent.putExtra("nodes", nodes);
+        startActivity(intent);
 
 
-//            buttons[i].setOnClickListener(new View.OnClickListener() {
-//                public void onClick(View v) {
-//                    String current_floor = floors[j];
-//                    pdfView = findViewById(R.id.pdfView);
-//                    pdfView.fromAsset("walker.pdf").pages(j)
-//                            .load();
-//                }
-//            });
-//    }
+    }
+
 }
