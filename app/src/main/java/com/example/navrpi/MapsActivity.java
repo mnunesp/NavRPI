@@ -3,6 +3,7 @@ package com.example.navrpi;
 
 import android.Manifest;
 
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Color;
@@ -40,9 +41,13 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PointOfInterest;
+import com.google.android.gms.maps.model.Polygon;
 import com.google.android.gms.maps.model.PolygonOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+
+import org.json.JSONException;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -126,6 +131,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 });
 
                 popupMenu.show();
+
+            }
+        });
+
+        mMap.setOnPolygonClickListener(new GoogleMap.OnPolygonClickListener(){
+            @Override
+            public void onPolygonClick(Polygon polygon) {
+                Log.d(Tag, "onCLick: clicked on polygon");
+                Intent intent = new Intent(MapsActivity.this, buildings.class);
+                startActivity(intent);
 
             }
         });
@@ -297,14 +312,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
             Double lat1, lng1;  lat1 = 42.73087; lng1 = -73.682535;
-            LatLng walker1 = new LatLng(lat1,lng1);
-            LatLng walker2 = new LatLng(lat1+.001,lng1);
-            LatLng walker3 = new LatLng(lat1,lng1+.001);
-            LatLng walker4 = new LatLng(lat1+.001,lng1+.001);
+            LatLng walker1 = new LatLng(lat1-.00025,lng1-.00025);
+            LatLng walker2 = new LatLng(lat1+.0002,lng1-.00025);
+            LatLng walker3 = new LatLng(lat1-.00025,lng1+.0002);
+            LatLng walker4 = new LatLng(lat1+.0002,lng1+.0002);
 
 
-            mMap.addPolygon(new PolygonOptions().add(union1).add(union2).add(union4).add(union3).fillColor(Color.argb(80, 0,0,225)).strokeColor(Color.BLUE).strokeWidth(10));
-            mMap.addPolygon(new PolygonOptions().add(walker1).add(walker2).add(walker4).add(walker3).fillColor(Color.argb(80, 0,0,225)).strokeColor(Color.BLUE).strokeWidth(5));
+            Polygon unions = mMap.addPolygon(new PolygonOptions().add(union1).add(union2).add(union4).add(union3).fillColor(Color.argb(80, 0,0,225)).strokeColor(Color.BLUE).strokeWidth(10));
+            Polygon walker = mMap.addPolygon(new PolygonOptions().add(walker1).add(walker2).add(walker4).add(walker3).fillColor(Color.argb(80, 0,0,225)).strokeColor(Color.BLUE).strokeWidth(5));
+            walker.setClickable(true);
+
             init();
         }
         //mMap.addMarker(new MarkerOptions().position(rpi).title("Marker in RPI"));
