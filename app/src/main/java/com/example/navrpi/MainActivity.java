@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -50,11 +49,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void init(){
-        Button btnMap = (Button) findViewById(R.id.btnMap);
-        Button btnBuilding = (Button) findViewById(R.id.btnBuilding);
+        Button btnMap = findViewById(R.id.btnMap);
+        Button btnBuilding =  findViewById(R.id.btnBuilding);
         btnMap.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
+                Log.d(TAG, "Maps pushed");
                 Intent intent = new Intent(MainActivity.this, MapsActivity.class);
                 startActivity(intent);
                 //MainActivity.this.finish();
