@@ -2,14 +2,14 @@ package com.example.navrpi;
 
 
 import android.Manifest;
-import android.content.Intent;
+
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
-import android.nfc.Tag;
+
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -22,7 +22,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -30,8 +29,6 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -41,7 +38,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
-import com.google.android.gms.maps.model.Marker;
+
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolygonOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -79,9 +76,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        mSearchText = (EditText) findViewById(R.id.input_search);
-        mGps = (ImageView) findViewById(R.id.ic_gps);
-        mMenu = (ImageButton) findViewById(R.id.menuButton);
+        mSearchText =  findViewById(R.id.input_search);
+        mGps =  findViewById(R.id.ic_gps);
+        mMenu =  findViewById(R.id.menuButton);
 
         getLocationPermission();
     }
@@ -155,6 +152,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             //Toast.makeText(this, address.toString(), Toast.LENGTH_SHORT).show();
             moveCamera(new LatLng(address.getLatitude(),address.getLongitude()), DEFAULT_ZOOM, address.getAddressLine(0));
         }
+        hideSoftKeyboard();
     }
 
     private void getDeviceLocation() {
@@ -297,8 +295,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             LatLng union3 = new LatLng(lat,lng+.001);
             LatLng union4 = new LatLng(lat+.001,lng+.001);
 
-            mMap.addPolygon(new PolygonOptions().add(union1).add(union2).add(union3).add(union4).fillColor(Color.argb(80, 0,0,225)).strokeColor(Color.BLUE).strokeWidth(5));
 
+            Double lat1, lng1;  lat1 = 42.73087; lng1 = -73.682535;
+            LatLng walker1 = new LatLng(lat1,lng1);
+            LatLng walker2 = new LatLng(lat1+.001,lng1);
+            LatLng walker3 = new LatLng(lat1,lng1+.001);
+            LatLng walker4 = new LatLng(lat1+.001,lng1+.001);
+
+
+            mMap.addPolygon(new PolygonOptions().add(union1).add(union2).add(union4).add(union3).fillColor(Color.argb(80, 0,0,225)).strokeColor(Color.BLUE).strokeWidth(10));
+            mMap.addPolygon(new PolygonOptions().add(walker1).add(walker2).add(walker4).add(walker3).fillColor(Color.argb(80, 0,0,225)).strokeColor(Color.BLUE).strokeWidth(5));
             init();
         }
         //mMap.addMarker(new MarkerOptions().position(rpi).title("Marker in RPI"));
@@ -306,7 +312,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     private void hideSoftKeyboard(){
+        Log.d(Tag, "Hiding keyboard");
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
     }
 
 }
