@@ -1,21 +1,23 @@
 package com.example.navrpi;
 
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Map;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.NonNull;
 
+@Entity
 public class MapNode {
+
+    @PrimaryKey
+    @NonNull
+    private String id;
+
+    @NonNull
+    private String building;
 
     private int x;
     private int y;
     private int floor;
-    private int distance;
-    private String building;
-    private String nodeType;
-    private HashMap<MapNode, Integer> adjacentNodes = new HashMap<>();
-    private LinkedList<MapNode> shortestPath = new LinkedList<>();
 
     MapNode() {
         x = 0;
@@ -31,8 +33,8 @@ public class MapNode {
         y = yi;
         floor = 0;
         building = "";
-        nodeType = "";
-        distance = Integer.MAX_VALUE;
+        id = building + Integer.toString(floor) + Integer.toString(x) + Integer.toString(y);
+
     }
 
     MapNode(int xi, int yi, int fl, String bld) {
@@ -40,8 +42,8 @@ public class MapNode {
         y = yi;
         floor = fl;
         building = bld;
-        nodeType = "";
-        distance = Integer.MAX_VALUE;
+        id = bld + Integer.toString(fl) + Integer.toString(xi) + Integer.toString(yi);
+
     }
 
     public int getX() { return x;}
@@ -52,32 +54,43 @@ public class MapNode {
 
     public HashMap<MapNode, Integer> getAdjacentNodes() { return adjacentNodes;}
 
-    public String getBuilding() { return building;}
 
-    public String getNodeType() { return nodeType; }
-
-    public int getNumAdjacent() { return adjacentNodes.size();}
-
-    public void addAdjacentNode(MapNode node, int distance) { adjacentNodes.put(node, distance); }
-
-
-    public void setNodeType(String nodeType) {
-        this.nodeType = nodeType;
+    public void setX(int x) {
+        this.x = x;
     }
 
-    public LinkedList<MapNode> getShortestPath() {
-        if (!shortestPath.contains(this)) {
-            shortestPath.add(this);
-        }
-
-        return shortestPath;
+    public int getY() {
+        return y;
     }
 
-    public void setShortestPath(LinkedList<MapNode> shortestPath) {
-        this.shortestPath = shortestPath;
+    public void setY(int y) {
+        this.y = y;
     }
 
-    public Integer getDistance() { return distance; }
+    public int getFloor() {
+        return floor;
+    }
 
-    public void setDistance(Integer distance) { this.distance = distance; }
+    public void setFloor(int floor) {
+        this.floor = floor;
+    }
+
+    public String getBuilding() {
+        return building;
+    }
+
+    public void setBuilding(String building) {
+        this.building = building;
+    }
+
+    @NonNull
+    public String getId() {
+        return id;
+    }
+
+    public void setId(@NonNull String id) {
+        this.id = id;
+    }
+
+
 }

@@ -16,6 +16,7 @@ import com.github.barteksc.pdfviewer.listener.OnDrawListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class buildings extends AppCompatActivity {
 
@@ -24,16 +25,26 @@ public class buildings extends AppCompatActivity {
     TextView showValue;
     //String[] floors = {"walkerlab2000.pdf","walkerlab3000.pdf","walkerlab6000.pdf"};
     int floor = 2;
-    ArrayList<MapNode> nodes = new ArrayList<>();
+    List<MapNode> nodes = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_buildings);
 
+
+        //MapNode startNodes[] = new MapNode[] {new MapNode(525,250, 3, "Walker"), new MapNode(525,625, 3, "Walker"),
+          //      new MapNode(1025,625, 3, "Walker"),new MapNode(665,350, 2, "Walker"),
+            //    new MapNode(665,650, 2, "Walker"), new MapNode(1100,650, 2, "Walker")};
+        //nodes.addAll(Arrays.asList(startNodes));
+        NodeDao nDao = NodeDatabase.getDatabase(getApplicationContext()).nodeDao();
+        //for (int i = 0; i < 6; i++) nDao.insert(startNodes[i]);
+        nodes = nDao.getAllNodes();
+
         // TODO: Query database for nodes and connections
         // Initial setup of nodes and connections. Hard coded for now
         ArrayList<MapNode> hallwayNodes = new ArrayList<>();
+
 
         MapNode node1 = new MapNode(450,200, 3, "Walker");
         MapNode node2 = new MapNode(450,550, 3, "Walker");
