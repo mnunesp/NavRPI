@@ -9,7 +9,7 @@ import java.util.List;
 @Dao
 public interface ClassroomDao {
 
-    @Query("SELECT * FROM classroom WHERE  number LIKE :search")
+    @Query("SELECT * FROM classroom WHERE number LIKE :search")
     Classroom searchNumber(int search);
 
     @Insert
