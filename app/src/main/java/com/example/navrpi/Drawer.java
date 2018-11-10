@@ -75,7 +75,7 @@ public class Drawer {
                         HashMap<MapNode, Integer> adjacentNodes = nodes.get(i).getAdjacentNodes();
                         for (MapNode key : adjacentNodes.keySet()) {
 
-                            if (nodes.contains(key)) {
+                            if (nodes.contains(key) && key.getFloor() == floor) {
                                 float adjacentposx = key.getX() * pdfzoom;
                                 float adjacentposy = key.getY() * pdfzoom;
                                 canvas.drawLine(nodedrawpositionx, nodedrawpositiony, adjacentposx, adjacentposy, linecolor);

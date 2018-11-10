@@ -20,17 +20,21 @@ public class BuildingNavigator {
         nodes = inputNodes; // TODO: Want to change to query DB
     }
 
-    public ArrayList<Integer> Navigate(MapNode sourceNode) {
+    public void Navigate(MapNode sourceNode) {
         sourceNode.setDistance(0);
 
         Set<MapNode> settledNodes = new HashSet<>();
         Set<MapNode> unsettledNodes = new HashSet<>();
         unsettledNodes.add(sourceNode);
+        VerticiesDao vDao = VerticiesDatabase.getDatabase(getApplicationContext()).VerticiesDao();
 
         while (unsettledNodes.size() != 0) {
             MapNode currentNode = getLowestDistanceNode(unsettledNodes);
             unsettledNodes.remove(currentNode);
-            for (Map.Entry<MapNode, Integer> adjacencyPair : currentNode.getAdjacentNodes().entrySet()) {
+
+
+            for (Map.Entry<MapNode, Integer> adjacencyPair : ((HashSet) vDao.getAssociatedEdges(currentNode.getId())).entrySet()) {
+
                 MapNode adjacentNode = adjacencyPair.getKey();
                 Integer edgeWeigh = adjacencyPair.getValue();
 
@@ -42,7 +46,7 @@ public class BuildingNavigator {
             settledNodes.add(currentNode);
         }
 
-        return new ArrayList<>();
+
     }
 
     private static void CalculateMinimumDistance(MapNode evaluationNode, Integer edgeWeigh, MapNode sourceNode) {

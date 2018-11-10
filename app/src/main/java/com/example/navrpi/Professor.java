@@ -9,9 +9,9 @@ public class Professor {
 
     @NonNull
     @PrimaryKey
-    private String firstName = "Dan";
+    private String firstName;
 
-    private String lastName = "Weeks";
+    private String lastName;
 
     public String getFirstName() {return firstName;}
 

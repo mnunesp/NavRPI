@@ -16,6 +16,7 @@ import com.github.barteksc.pdfviewer.listener.OnDrawListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class buildings extends AppCompatActivity {
 
@@ -24,52 +25,71 @@ public class buildings extends AppCompatActivity {
     TextView showValue;
     //String[] floors = {"walkerlab2000.pdf","walkerlab3000.pdf","walkerlab6000.pdf"};
     int floor = 2;
-    ArrayList<MapNode> nodes = new ArrayList<>();
+    List<MapNode> nodes = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_buildings);
 
+
+        //MapNode startNodes[] = new MapNode[] {new MapNode(525,250, 3, "Walker"), new MapNode(525,625, 3, "Walker"),
+          //      new MapNode(1025,625, 3, "Walker"),new MapNode(665,350, 2, "Walker"),
+            //    new MapNode(665,650, 2, "Walker"), new MapNode(1100,650, 2, "Walker")};
+        //nodes.addAll(Arrays.asList(startNodes));
+        NodeDao nDao = NodeDatabase.getDatabase(getApplicationContext()).nodeDao();
+
+        //for (int i = 0; i < 6; i++) nDao.insert(startNodes[i]);
+        nodes = nDao.getAllNodes();
+
         // TODO: Query database for nodes and connections
         // Initial setup of nodes and connections. Hard coded for now
-        ArrayList<MapNode> hallwayNodes = new ArrayList<>();
+        //ArrayList<MapNode> hallwayNodes = new ArrayList<>();
 
-        MapNode node1 = new MapNode(450,200, 3, "Walker");
-        MapNode node2 = new MapNode(450,550, 3, "Walker");
-        MapNode node3 = new MapNode(950,550, 3, "Walker");
-        MapNode node4 = new MapNode(950,650, 3, "Walker");
-        MapNode node5 = new MapNode(1000,650, 3, "Walker");
 
-        node1.addAdjacentNode(node2,1);
-        node1.addAdjacentNode(node3,1);
-        node2.addAdjacentNode(node3,1);
-        node3.addAdjacentNode(node4,1);
-        node4.addAdjacentNode(node5,1);
+        //MapNode node1 = new MapNode(450,200, 3, "Walker");
+        //MapNode node2 = new MapNode(450,550, 3, "Walker");
+        //MapNode node3 = new MapNode(950,550, 3, "Walker");
+        //MapNode node4 = new MapNode(950,650, 3, "Walker");
+        //MapNode node5 = new MapNode(1000,650, 3, "Walker");
 
-        node1.setNodeType("hallway");
-        node2.setNodeType("hallway");
-        node3.setNodeType("hallway");
-        node4.setNodeType("hallway");
-        node5.setNodeType("hallway");
+        //node1.addAdjacentNode(node2,1);
+        //node1.addAdjacentNode(node3,1);
+        //node2.addAdjacentNode(node3,1);
+        //node3.addAdjacentNode(node4,1);
+        //node4.addAdjacentNode(node5,1);
 
-        hallwayNodes.add(node1);
-        hallwayNodes.add(node2);
-        hallwayNodes.add(node3);
-        hallwayNodes.add(node4);
-        hallwayNodes.add(node5);
+
+
+        //nodes = nDao.getAllNodes();
+
+        //node1.setNodeType("hallway");
+        //node2.setNodeType("hallway");
+        //node3.setNodeType("hallway");
+        //node4.setNodeType("hallway");
+        //node5.setNodeType("hallway");
+
+        //hallwayNodes.add(node1);
+        //hallwayNodes.add(node2);
+        //hallwayNodes.add(node3);
+        //hallwayNodes.add(node4);
+        //hallwayNodes.add(node5);
+
+        //hallwayNodes = (ArrayList<MapNode>) nDao.searchType("hallway");
 
 
         //Bathroom nodes
-        MapNode bathroomNodes[] = new MapNode[] {new MapNode(350,650, 3, "Walker")};
-        bathroomNodes[0].addAdjacentNode(hallwayNodes.get(1),1);
+        //MapNode bathroomNodes[] = new MapNode[] {new MapNode(350,650, 3, "Walker")};
+        //bathroomNodes[0].addAdjacentNode(hallwayNodes.get(1),1);
 
-        for (int i = 0; i < bathroomNodes.length; ++i) {
-            bathroomNodes[i].setNodeType("bathroom");
-        }
+        //for (int i = 0; i < bathroomNodes.length; ++i) {
+          //  bathroomNodes[i].setNodeType("bathroom");
+        //}
 
-        nodes.addAll(hallwayNodes);
-        nodes.addAll(Arrays.asList(bathroomNodes));
+        //nodes.addAll(hallwayNodes);
+        //nodes.addAll(Arrays.asList(bathroomNodes));
+
+        //nodes = nDao.getAllNodes();
 
         pdfView = findViewById(R.id.pdfView);
         pdfView.fromAsset("walker.pdf").pages(floor).enableDoubletap(false).load();
@@ -81,7 +101,7 @@ public class buildings extends AppCompatActivity {
     // Renders the current floor plan and nodes
     private void Draw() {
 
-        Drawer d = new Drawer(buildings.this, nodes, pdfView);
+        Drawer d = new Drawer(buildings.this, (ArrayList<MapNode>) nodes, pdfView);
         OnDrawListener DrawL = d.createDrawListener(floor);
 
         pdfView.fromAsset("walker.pdf").pages(floor).enableDoubletap(false).onDraw(DrawL).load();
