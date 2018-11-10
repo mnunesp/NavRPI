@@ -21,4 +21,10 @@ public interface NodeDao {
 
     @Query("DELETE FROM mapNode")
     void DeleteAll();
+
+    @Query("SELECT * FROM mapNode WHERE id LIKE :i")
+    List<MapNode> searchID(String i);
+
+    @Query("SELECT * FROM mapNode WHERE nodeType LIKE :t")
+    List<MapNode> searchType(String t);
 }

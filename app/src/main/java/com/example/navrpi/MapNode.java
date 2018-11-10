@@ -5,6 +5,8 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
+import java.util.HashMap;
+
 @Entity
 public class MapNode {
 
@@ -18,6 +20,8 @@ public class MapNode {
     private int x;
     private int y;
     private int floor;
+    private int distance;
+    private String nodeType;
 
     MapNode() {
         x = 0;
@@ -33,15 +37,18 @@ public class MapNode {
         y = yi;
         floor = 0;
         building = "";
+        distance = Integer.MAX_VALUE;
         id = building + Integer.toString(floor) + Integer.toString(x) + Integer.toString(y);
 
     }
 
-    MapNode(int xi, int yi, int fl, String bld) {
+    MapNode(int xi, int yi, int fl, String bld, String type) {
         x = xi;
         y = yi;
         floor = fl;
         building = bld;
+        nodeType = type;
+        distance = Integer.MAX_VALUE;
         id = bld + Integer.toString(fl) + Integer.toString(xi) + Integer.toString(yi);
 
     }
@@ -52,23 +59,15 @@ public class MapNode {
 
     public int getFloor() { return floor;}
 
-    public HashMap<MapNode, Integer> getAdjacentNodes() { return adjacentNodes;}
+    //public HashMap<MapNode, Integer> getAdjacentNodes() { return adjacentNodes;}
 
 
     public void setX(int x) {
         this.x = x;
     }
 
-    public int getY() {
-        return y;
-    }
-
     public void setY(int y) {
         this.y = y;
-    }
-
-    public int getFloor() {
-        return floor;
     }
 
     public void setFloor(int floor) {
@@ -92,5 +91,19 @@ public class MapNode {
         this.id = id;
     }
 
+    public void setNodeType(String nodeType) {
+        this.nodeType = nodeType;
+    }
 
+    public String getNodeType() {
+        return nodeType;
+    }
+
+    public int getDistance() {
+        return distance;
+    }
+
+    public void setDistance(int dist) {
+        this.distance = dist;
+    }
 }
