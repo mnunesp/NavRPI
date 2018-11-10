@@ -1,5 +1,7 @@
 package com.example.navrpi;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -7,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+import android.content.Intent;
 
 import com.github.barteksc.pdfviewer.PDFView;
 import com.github.barteksc.pdfviewer.listener.OnDrawListener;
@@ -29,6 +32,7 @@ public class buildings extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_buildings);
 
+
         //MapNode startNodes[] = new MapNode[] {new MapNode(525,250, 3, "Walker"), new MapNode(525,625, 3, "Walker"),
           //      new MapNode(1025,625, 3, "Walker"),new MapNode(665,350, 2, "Walker"),
             //    new MapNode(665,650, 2, "Walker"), new MapNode(1100,650, 2, "Walker")};
@@ -37,44 +41,59 @@ public class buildings extends AppCompatActivity {
         //for (int i = 0; i < 6; i++) nDao.insert(startNodes[i]);
         nodes = nDao.getAllNodes();
 
+        // TODO: Query database for nodes and connections
+        // Initial setup of nodes and connections. Hard coded for now
+        ArrayList<MapNode> hallwayNodes = new ArrayList<>();
+
+
+        MapNode node1 = new MapNode(450,200, 3, "Walker");
+        MapNode node2 = new MapNode(450,550, 3, "Walker");
+        MapNode node3 = new MapNode(950,550, 3, "Walker");
+        MapNode node4 = new MapNode(950,650, 3, "Walker");
+        MapNode node5 = new MapNode(1000,650, 3, "Walker");
+
+        node1.addAdjacentNode(node2,1);
+        node1.addAdjacentNode(node3,1);
+        node2.addAdjacentNode(node3,1);
+        node3.addAdjacentNode(node4,1);
+        node4.addAdjacentNode(node5,1);
+
+        node1.setNodeType("hallway");
+        node2.setNodeType("hallway");
+        node3.setNodeType("hallway");
+        node4.setNodeType("hallway");
+        node5.setNodeType("hallway");
+
+        hallwayNodes.add(node1);
+        hallwayNodes.add(node2);
+        hallwayNodes.add(node3);
+        hallwayNodes.add(node4);
+        hallwayNodes.add(node5);
+
+
+        //Bathroom nodes
+        MapNode bathroomNodes[] = new MapNode[] {new MapNode(350,650, 3, "Walker")};
+        bathroomNodes[0].addAdjacentNode(hallwayNodes.get(1),1);
+
+        for (int i = 0; i < bathroomNodes.length; ++i) {
+            bathroomNodes[i].setNodeType("bathroom");
+        }
+
+        nodes.addAll(hallwayNodes);
+        nodes.addAll(Arrays.asList(bathroomNodes));
+
+        pdfView = findViewById(R.id.pdfView);
+        pdfView.fromAsset("walker.pdf").pages(floor).enableDoubletap(false).load();
+
         showValue = (TextView) findViewById(R.id.floor);
 
     }
 
-
+    // Renders the current floor plan and nodes
     private void Draw() {
 
-        OnDrawListener DrawL = new OnDrawListener() {
-            @Override
-            public void onLayerDrawn(Canvas canvas, float pageWidth, float pageHeight, int displayedPage) {
-                System.out.println("Testing" + "\t" + nodes.size());
-                System.out.println("PageWidth: " + pageWidth + " pageHeight: " + pageHeight + " Page: " + displayedPage);
-                Paint p = new Paint();
-                for (int i = 0; i < nodes.size(); ++i) {
-                    if (nodes.get(i).getFloor()==floor) {
-
-                        System.out.println("pdfView PositionOffSet: " + pdfView.getPositionOffset());
-                        System.out.println("CurrentXOffset: " + pdfView.getCurrentXOffset() +
-                                " CurrentYOffset: " + pdfView.getCurrentYOffset());
-
-                        float pdfzoom = pdfView.getZoom();
-
-                        float nodedrawpositionx = nodes.get(i).getX() * pdfzoom;
-                        float nodedrawpositiony = nodes.get(i).getY() * pdfzoom;
-                        float noderadius = 20;
-
-                        System.out.println("Zoom: " + pdfView.getZoom());
-                        System.out.println("NodeXPos: " + nodedrawpositionx + " NodeYPos: " + nodedrawpositiony);
-                        System.out.println("Dist to Right: " + (pageWidth - nodedrawpositionx) + " Dist to Bottom: " + (pageHeight - nodedrawpositiony));
-
-                        canvas.drawCircle(nodedrawpositionx, nodedrawpositiony, noderadius, p);
-                    }
-                }
-
-
-            }
-        };
-
+        Drawer d = new Drawer(buildings.this, nodes, pdfView);
+        OnDrawListener DrawL = d.createDrawListener(floor);
 
         pdfView.fromAsset("walker.pdf").pages(floor).enableDoubletap(false).onDraw(DrawL).load();
 
@@ -87,7 +106,7 @@ public class buildings extends AppCompatActivity {
         if (floor == 5) return;
         floor++;
         showValue.setText(Integer.toString(floor+1)); //counting starts at 0...
-        pdfView = findViewById(R.id.pdfView);
+        //pdfView = findViewById(R.id.pdfView);
         Draw();
 
 
@@ -97,21 +116,20 @@ public class buildings extends AppCompatActivity {
         if (floor == 0)return; //bottom floor
         floor--;
         showValue.setText(Integer.toString(floor+1)); //counting starts at 0...
-        pdfView = findViewById(R.id.pdfView);
+        //pdfView = findViewById(R.id.pdfView);
         Draw();
 
     }
 
 
+    public void PreviewRoute (View view) {
+
+        Intent intent = new Intent(buildings.this, RoutePreviewActivity.class);
+        intent.putExtra("building_name", "walker");
+        //intent.putExtra("nodes", nodes);
+        startActivity(intent);
 
 
-//            buttons[i].setOnClickListener(new View.OnClickListener() {
-//                public void onClick(View v) {
-//                    String current_floor = floors[j];
-//                    pdfView = findViewById(R.id.pdfView);
-//                    pdfView.fromAsset("walker.pdf").pages(j)
-//                            .load();
-//                }
-//            });
-//    }
+    }
+
 }

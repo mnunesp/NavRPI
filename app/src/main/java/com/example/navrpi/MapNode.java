@@ -1,5 +1,6 @@
 package com.example.navrpi;
 
+
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
@@ -18,18 +19,22 @@ public class MapNode {
     private int y;
     private int floor;
 
-
-
     MapNode() {
         x = 0;
         y = 0;
+        floor = 0;
+        building = "";
+        nodeType = "";
+        distance = Integer.MAX_VALUE;
     }
 
     MapNode(int xi, int yi) {
         x = xi;
         y = yi;
         floor = 0;
+        building = "";
         id = building + Integer.toString(floor) + Integer.toString(x) + Integer.toString(y);
+
     }
 
     MapNode(int xi, int yi, int fl, String bld) {
@@ -38,11 +43,17 @@ public class MapNode {
         floor = fl;
         building = bld;
         id = bld + Integer.toString(fl) + Integer.toString(xi) + Integer.toString(yi);
+
     }
 
-    public int getX() {
-        return x;
-    }
+    public int getX() { return x;}
+
+    public int getY() { return y;}
+
+    public int getFloor() { return floor;}
+
+    public HashMap<MapNode, Integer> getAdjacentNodes() { return adjacentNodes;}
+
 
     public void setX(int x) {
         this.x = x;
