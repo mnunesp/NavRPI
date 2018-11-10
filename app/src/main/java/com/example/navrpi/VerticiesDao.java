@@ -4,8 +4,9 @@ import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 
-import java.util.ArrayList;
+
 import java.util.List;
+import java.util.Set;
 
 @Dao
 public interface VerticiesDao {
@@ -20,5 +21,5 @@ public interface VerticiesDao {
     void DeleteAll();
 
     @Query("SELECT * FROM verticies WHERE 'dest' LIKE :d OR 'source' LIKE :d")
-    List<Verticies> getAssociatedEdges(String d);
+    Set<Verticies> getAssociatedEdges(String d);
 }
