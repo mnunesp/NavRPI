@@ -60,13 +60,12 @@ public class RoutePreviewActivity extends AppCompatActivity {
             mapnodes.get(i).setNodeType("hallway");
         }
 
-        System.out.println("Before: " + node2.getDistance());
+
 
         BuildingNavigator buildingNav = new BuildingNavigator();
         buildingNav.Navigate(node1);
 
-        System.out.println("After: " + node4.getDistance());
-        System.out.println("List: " + node5.getShortestPath());
+
 
 
         ArrayList<MapNode> routenodes = new ArrayList<>();

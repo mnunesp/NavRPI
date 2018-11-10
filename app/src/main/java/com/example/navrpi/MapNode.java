@@ -24,8 +24,6 @@ public class MapNode {
         y = 0;
         floor = 0;
         building = "";
-        nodeType = "";
-        distance = Integer.MAX_VALUE;
     }
 
     MapNode(int xi, int yi) {
@@ -52,23 +50,12 @@ public class MapNode {
 
     public int getFloor() { return floor;}
 
-    public HashMap<MapNode, Integer> getAdjacentNodes() { return adjacentNodes;}
-
-
     public void setX(int x) {
         this.x = x;
     }
 
-    public int getY() {
-        return y;
-    }
-
     public void setY(int y) {
         this.y = y;
-    }
-
-    public int getFloor() {
-        return floor;
     }
 
     public void setFloor(int floor) {
