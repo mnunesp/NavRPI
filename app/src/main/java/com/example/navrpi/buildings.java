@@ -40,9 +40,8 @@ public class buildings extends AppCompatActivity {
         NodeDao nDao = NodeDatabase.getDatabase(getApplicationContext()).nodeDao();
 
         //for (int i = 0; i < 6; i++) nDao.insert(startNodes[i]);
-        nodes = nDao.getAllNodes();
+        List<MapNode> databaseNodes = nDao.searchBuildFloor("Walker");
 
-        // TODO: Query database for nodes and connections
         // Initial setup of nodes and connections. Hard coded for now
         //ArrayList<MapNode> hallwayNodes = new ArrayList<>();
 
@@ -58,24 +57,6 @@ public class buildings extends AppCompatActivity {
         //node2.addAdjacentNode(node3,1);
         //node3.addAdjacentNode(node4,1);
         //node4.addAdjacentNode(node5,1);
-
-
-
-        //nodes = nDao.getAllNodes();
-
-        //node1.setNodeType("hallway");
-        //node2.setNodeType("hallway");
-        //node3.setNodeType("hallway");
-        //node4.setNodeType("hallway");
-        //node5.setNodeType("hallway");
-
-        //hallwayNodes.add(node1);
-        //hallwayNodes.add(node2);
-        //hallwayNodes.add(node3);
-        //hallwayNodes.add(node4);
-        //hallwayNodes.add(node5);
-
-        //hallwayNodes = (ArrayList<MapNode>) nDao.searchType("hallway");
 
 
         //Bathroom nodes
