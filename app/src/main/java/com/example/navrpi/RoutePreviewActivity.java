@@ -19,6 +19,7 @@ public class RoutePreviewActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        /*
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_route_preview_activity);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -32,6 +33,7 @@ public class RoutePreviewActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
 
         //ArrayList<MapNode> routenodes = (ArrayList<MapNode>) getIntent().getSerializableExtra("nodes");
 
@@ -77,8 +79,7 @@ public class RoutePreviewActivity extends AppCompatActivity {
         OnDrawListener DrawL = d.createDrawListener(3);
 
 
-
-        pdfView.fromAsset("walker.pdf").pages(3).enableDoubletap(false).onDraw(DrawL).load();
+        pdfView.fromAsset("walker.pdf").pages(3).enableDoubletap(false).onDraw(DrawL).load();*/
     }
 
 

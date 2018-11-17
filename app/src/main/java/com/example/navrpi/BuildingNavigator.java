@@ -15,6 +15,7 @@ public class BuildingNavigator {
 
     }
 
+    /*
     public BuildingNavigator(String buildingName, LinkedList<MapNode> inputNodes) {
         currentBuilding = buildingName;
         nodes = inputNodes; // TODO: Want to change to query DB
@@ -70,5 +71,5 @@ public class BuildingNavigator {
             }
         }
         return lowestDistanceNode;
-    }
+    }*/
 }
