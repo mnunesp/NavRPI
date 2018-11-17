@@ -72,7 +72,8 @@ public class Drawer {
                         }
 
                         // Draw lines between connecting nodes
-                        HashMap<MapNode, Integer> adjacentNodes = nodes.get(i).getAdjacentNodes();
+                        //HashMap<MapNode, Integer> adjacentNodes = nodes.get(i).getAdjacentNodes();
+                        HashMap<MapNode, Integer> adjacentNodes = new HashMap<MapNode,Integer>();
                         for (MapNode key : adjacentNodes.keySet()) {
 
                             if (nodes.contains(key) && key.getFloor() == floor) {
