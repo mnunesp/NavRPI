@@ -15,6 +15,7 @@ public class Building {
     @PrimaryKey
     private String name;
 
+
     private double lat;
     private double lng;
 
@@ -24,6 +25,7 @@ public class Building {
         this.name = name;
         this.lat = lat;
         this.lng = lng;
+
     }
 
     public String getName() { return name; }
@@ -50,5 +52,6 @@ public class Building {
 
     public void setLng(double lng) {
         this.lng = lng;
+
     }
 }
