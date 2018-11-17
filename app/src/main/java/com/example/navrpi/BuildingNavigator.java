@@ -26,13 +26,14 @@ public class BuildingNavigator {
         Set<MapNode> settledNodes = new HashSet<>();
         Set<MapNode> unsettledNodes = new HashSet<>();
         unsettledNodes.add(sourceNode);
+        VerticiesDao vDao = VerticiesDatabase.getDatabase(getApplicationContext()).VerticiesDao();
 
         while (unsettledNodes.size() != 0) {
             MapNode currentNode = getLowestDistanceNode(unsettledNodes);
             unsettledNodes.remove(currentNode);
 
 
-            for (Map.Entry<MapNode, Integer> adjacencyPair : currentNode.getAdjacentNodes().entrySet()) {
+            for (Map.Entry<MapNode, Integer> adjacencyPair : ((HashSet) vDao.getAssociatedEdges(currentNode.getId())).entrySet()) {
 
                 MapNode adjacentNode = adjacencyPair.getKey();
                 Integer edgeWeigh = adjacencyPair.getValue();

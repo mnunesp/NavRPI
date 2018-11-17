@@ -38,25 +38,39 @@ public class buildings extends AppCompatActivity {
             //    new MapNode(665,650, 2, "Walker"), new MapNode(1100,650, 2, "Walker")};
         //nodes.addAll(Arrays.asList(startNodes));
         NodeDao nDao = NodeDatabase.getDatabase(getApplicationContext()).nodeDao();
+
         //for (int i = 0; i < 6; i++) nDao.insert(startNodes[i]);
         List<MapNode> databaseNodes = nDao.searchBuildFloor("Walker");
 
         // Initial setup of nodes and connections. Hard coded for now
-        ArrayList<MapNode> hallwayNodes = new ArrayList<>();
+        //ArrayList<MapNode> hallwayNodes = new ArrayList<>();
 
 
+        //MapNode node1 = new MapNode(450,200, 3, "Walker");
+        //MapNode node2 = new MapNode(450,550, 3, "Walker");
+        //MapNode node3 = new MapNode(950,550, 3, "Walker");
+        //MapNode node4 = new MapNode(950,650, 3, "Walker");
+        //MapNode node5 = new MapNode(1000,650, 3, "Walker");
+
+        //node1.addAdjacentNode(node2,1);
+        //node1.addAdjacentNode(node3,1);
+        //node2.addAdjacentNode(node3,1);
+        //node3.addAdjacentNode(node4,1);
+        //node4.addAdjacentNode(node5,1);
 
 
         //Bathroom nodes
-        MapNode bathroomNodes[] = new MapNode[] {new MapNode(350,650, 3, "Walker")};
-        bathroomNodes[0].addAdjacentNode(hallwayNodes.get(1),1);
+        //MapNode bathroomNodes[] = new MapNode[] {new MapNode(350,650, 3, "Walker")};
+        //bathroomNodes[0].addAdjacentNode(hallwayNodes.get(1),1);
 
-        for (int i = 0; i < bathroomNodes.length; ++i) {
-            bathroomNodes[i].setNodeType("bathroom");
-        }
+        //for (int i = 0; i < bathroomNodes.length; ++i) {
+          //  bathroomNodes[i].setNodeType("bathroom");
+        //}
 
-        nodes.addAll(hallwayNodes);
-        nodes.addAll(Arrays.asList(bathroomNodes));
+        //nodes.addAll(hallwayNodes);
+        //nodes.addAll(Arrays.asList(bathroomNodes));
+
+        //nodes = nDao.getAllNodes();
 
         pdfView = findViewById(R.id.pdfView);
         pdfView.fromAsset("walker.pdf").pages(floor).enableDoubletap(false).load();
@@ -68,7 +82,7 @@ public class buildings extends AppCompatActivity {
     // Renders the current floor plan and nodes
     private void Draw() {
 
-        Drawer d = new Drawer(buildings.this, nodes, pdfView);
+        Drawer d = new Drawer(buildings.this, (ArrayList<MapNode>) nodes, pdfView);
         OnDrawListener DrawL = d.createDrawListener(floor);
 
         pdfView.fromAsset("walker.pdf").pages(floor).enableDoubletap(false).onDraw(DrawL).load();
