@@ -13,8 +13,9 @@ public class BuildingAsyncPopulate extends AsyncTask<Void, Void, Void> {
     @Override
     protected Void doInBackground(final Void... params){
         bDao.deleteAll();
-        float[] n = new float[8];
-        Building walker = new Building("Walker", n);
+        double lat = 42.73087;
+        double lng = -73.682535;
+        Building walker = new Building("Walker", lat, lng);
         bDao.insert(walker);
         return null;
     }

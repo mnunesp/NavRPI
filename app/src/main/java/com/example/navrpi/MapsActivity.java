@@ -6,7 +6,6 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
-import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -40,14 +39,10 @@ import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.PointOfInterest;
-import com.google.android.gms.maps.model.Polygon;
-import com.google.android.gms.maps.model.PolygonOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-
-import org.json.JSONException;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -114,6 +109,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
 
+        //Menu Button CLickable
         mMenu.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
@@ -135,13 +131,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
 
-        mMap.setOnPolygonClickListener(new GoogleMap.OnPolygonClickListener(){
+        //Clickable for Pointer (go to this building)
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
-            public void onPolygonClick(Polygon polygon) {
+            public boolean onMarkerClick(Marker marker) {
                 Log.d(Tag, "onCLick: clicked on polygon");
                 Intent intent = new Intent(MapsActivity.this, buildings.class);
+                intent.putExtra("buildingName", (String)marker.getTitle());
                 startActivity(intent);
-
+                return true;
             }
         });
 
@@ -303,24 +301,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             mMap.setMyLocationEnabled(true);
             mMap.getUiSettings().setMyLocationButtonEnabled(false);
 
-            Double lat, lng; lat = 42.730052689755404; lng = -73.67669504076449;
-            //LatLng union = new LatLng(lat,lng);
-            LatLng union1 = new LatLng(lat,lng);
-            LatLng union2 = new LatLng(lat+.001,lng);
-            LatLng union3 = new LatLng(lat,lng+.001);
-            LatLng union4 = new LatLng(lat+.001,lng+.001);
+            addLocations();
 
-
-            Double lat1, lng1;  lat1 = 42.73087; lng1 = -73.682535;
-            LatLng walker1 = new LatLng(lat1-.00025,lng1-.00025);
-            LatLng walker2 = new LatLng(lat1+.0002,lng1-.00025);
-            LatLng walker3 = new LatLng(lat1-.00025,lng1+.0002);
-            LatLng walker4 = new LatLng(lat1+.0002,lng1+.0002);
-
-
-            Polygon unions = mMap.addPolygon(new PolygonOptions().add(union1).add(union2).add(union4).add(union3).fillColor(Color.argb(80, 0,0,225)).strokeColor(Color.BLUE).strokeWidth(10));
-            Polygon walker = mMap.addPolygon(new PolygonOptions().add(walker1).add(walker2).add(walker4).add(walker3).fillColor(Color.argb(80, 0,0,225)).strokeColor(Color.BLUE).strokeWidth(5));
-            walker.setClickable(true);
 
             init();
         }
@@ -328,10 +310,27 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         //mMap.moveCamera(CameraUpdateFactory.newLatLng(rpi));
     }
 
+
+    //Hide the keyboard when not being used for typing in search
     private void hideSoftKeyboard(){
         Log.d(Tag, "Hiding keyboard");
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
     }
+
+    //add Building points from the Data base
+    private void addLocations(){
+        Log.d(Tag, "Adding Locations");
+        BuildingDao bdao = BuildingDatabase.getDatabase(getApplicationContext()).buildingDao();
+        ArrayList<Building> b = (ArrayList<Building>)bdao.getAllBuildings();
+
+
+        for(int i=0; i<b.size();i++){
+            Marker temp = mMap.addMarker(new MarkerOptions()
+                    .position(b.get(i).coordinate1())
+                    .title(b.get(i).getName()));
+        }
+    }
+
 
 }

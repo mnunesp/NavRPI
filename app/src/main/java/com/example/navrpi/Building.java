@@ -4,6 +4,8 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.util.ArrayList;
 
 @Entity
@@ -13,18 +15,18 @@ public class Building {
     @PrimaryKey
     private String name;
 
-    private float x1;
-    private float x2;
-    private float x3;
-    private float x4;
-    private float y1;
-    private float y2;
-    private float y3;
-    private float y4;
+    private double x1;
+    private double x2;
+    private double x3;
+    private double x4;
+    private double y1;
+    private double y2;
+    private double y3;
+    private double y4;
 
     public Building() {};
 
-    public Building(String name, float[] coordinates) {
+    public Building(String name, double[] coordinates) {
         this.name = name;
         this.x1 = coordinates[0];
         this.x2 = coordinates[1];
@@ -42,8 +44,8 @@ public class Building {
         this.name = n;
     }
 
-    public float[] getCoordinates() {
-        float[] c = new float[8];
+    public double[] getCoordinates() {
+        double[] c = new double[8];
         c[0] = this.x1;
         c[1] = this.x2;
         c[2] = this.x3;
@@ -55,67 +57,83 @@ public class Building {
         return c;
     }
 
-    public float getX1() {
+    public double getX1() {
         return x1;
     }
 
-    public float getX2() {
+    public double getX2() {
         return x2;
     }
 
-    public float getX3() {
+    public double getX3() {
         return x3;
     }
 
-    public float getX4() {
+    public double getX4() {
         return x4;
     }
 
-    public float getY1() {
+    public double getY1() {
         return y1;
     }
 
-    public float getY2() {
+    public double getY2() {
         return y2;
     }
 
-    public float getY3() {
+    public double getY3() {
         return y3;
     }
 
-    public float getY4() {
+    public double getY4() {
         return y4;
     }
 
-    public void setX1(float x1) {
+    public void setX1(double x1) {
         this.x1 = x1;
     }
 
-    public void setX2(float x2) {
+    public void setX2(double x2) {
         this.x2 = x2;
     }
 
-    public void setX3(float x3) {
+    public void setX3(double x3) {
         this.x3 = x3;
     }
 
-    public void setX4(float x4) {
+    public void setX4(double x4) {
         this.x4 = x4;
     }
 
-    public void setY1(float y1) {
+    public void setY1(double y1) {
         this.y1 = y1;
     }
 
-    public void setY2(float y2) {
+    public void setY2(double y2) {
         this.y2 = y2;
     }
 
-    public void setY3(float y3) {
+    public void setY3(double y3) {
         this.y3 = y3;
     }
 
-    public void setY4(float y4) {
+    public void setY4(double y4) {
         this.y4 = y4;
+    }
+
+    public LatLng coordinate1() {
+        return new LatLng(x1,y1);
+    }
+
+    public LatLng coordinate2() {
+        return new LatLng(x2,y2);
+    }
+
+    public LatLng coordinate3() {
+        return new LatLng(x3,y3);
+    }
+
+    public LatLng coordinate4() {
+        return new LatLng(x4,y4);
     }
 }
