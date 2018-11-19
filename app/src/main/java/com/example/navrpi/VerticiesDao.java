@@ -6,7 +6,7 @@ import android.arch.persistence.room.Query;
 
 
 import java.util.List;
-import java.util.Set;
+//import java.util.Set;
 
 @Dao
 public interface VerticiesDao {
