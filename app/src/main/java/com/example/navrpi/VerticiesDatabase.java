@@ -23,8 +23,8 @@ public abstract class VerticiesDatabase extends RoomDatabase {
         return INSTANCE;
     }
 
-    private static VerticiesDatabase.Callback sRoomDatabaseCallback =
-            new VerticiesDatabase.Callback(){
+    private static RoomDatabase.Callback sRoomDatabaseCallback = new
+            RoomDatabase.Callback(){
 
                 @Override
                 public void onOpen (SupportSQLiteDatabase db){
