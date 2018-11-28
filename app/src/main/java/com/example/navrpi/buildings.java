@@ -5,17 +5,33 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.content.Intent;
+import android.support.v7.widget.Toolbar;
 
 import com.github.barteksc.pdfviewer.PDFView;
 import com.github.barteksc.pdfviewer.listener.OnDrawListener;
+import com.mikepenz.materialdrawer.DrawerBuilder;
+import com.mikepenz.materialdrawer.model.DividerDrawerItem;
+import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
+import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+
+import static com.example.navrpi.R.layout.drawerlayout;
 
 public class buildings extends AppCompatActivity {
 
@@ -26,10 +42,41 @@ public class buildings extends AppCompatActivity {
     int floor = 2;
     ArrayList<MapNode> nodes = new ArrayList<>();
 
+    //private DrawerLayout mDrawerLayout;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_buildings);
+        new DrawerBuilder().withActivity(this).build();
+
+        PrimaryDrawerItem item1 = new PrimaryDrawerItem().withIdentifier(1).withName("Menu");
+        SecondaryDrawerItem item2 = new SecondaryDrawerItem().withIdentifier(2).withName("Professors");
+        Toolbar toolbar = findViewById(R.id.toolbar);
+
+        //create the drawer and remember the 'Drawer' result object
+        com.mikepenz.materialdrawer.Drawer result = new DrawerBuilder()
+                .withActivity(this)
+                .withToolbar(toolbar)
+                .addDrawerItems(
+                        item1,
+                        new DividerDrawerItem(),
+                        item2,
+                        new SecondaryDrawerItem().withName("Setting")
+                )
+                .withOnDrawerItemClickListener(new com.mikepenz.materialdrawer.Drawer.OnDrawerItemClickListener() {
+                    @Override
+                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                       //do something with clicked item
+                        return false;
+                    }
+                })
+                .build();
+
+
+
 
         // TODO: Query database for nodes and connections
         // Initial setup of nodes and connections. Hard coded for now
@@ -71,12 +118,13 @@ public class buildings extends AppCompatActivity {
         nodes.addAll(hallwayNodes);
         nodes.addAll(Arrays.asList(bathroomNodes));
 
+        //setContentView(R.layout.activity_buildings);
         pdfView = findViewById(R.id.pdfView);
         pdfView.fromAsset("walker.pdf").pages(floor).enableDoubletap(false).load();
 
         showValue = (TextView) findViewById(R.id.floor);
-
     }
+
 
     // Renders the current floor plan and nodes
     private void Draw() {
