@@ -15,10 +15,10 @@ public class Classroom {
 
     private String node;
 
-    public Classroom(String nb, String b, String nd) {
-        number = nb;
-        building = b;
-        node = nd;
+    public Classroom(String number, String building, String node) {
+        this.number = number;
+        this.building = building;
+        this.node = node;
     }
 
     public String getNumber() { return number; }

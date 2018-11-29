@@ -15,10 +15,10 @@ public class Professor {
 
     private String node;
 
-    public Professor(String f, String l, String n) {
-        firstName = f;
-        lastName = l;
-        node = n;
+    public Professor(String firstName, String lastName, String node) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.node = node;
     }
 
     public String getFirstName() {return firstName;}
