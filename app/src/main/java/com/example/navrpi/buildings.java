@@ -39,9 +39,15 @@ public class buildings extends AppCompatActivity {
         //nodes.addAll(Arrays.asList(startNodes));
         NodeDao nDao = NodeDatabase.getDatabase(getApplicationContext()).nodeDao();
 
+
         //for (int i = 0; i < 6; i++) nDao.insert(startNodes[i]);
         List<MapNode> databaseNodes = nDao.searchBuildFloor("Walker");
 
+        VerticiesDao vDao = VerticiesDatabase.getDatabase(getApplicationContext()).VerticiesDao();
+
+        List<Verticies> all_vertexes = vDao.getAllEdges();
+
+        System.out.println(all_vertexes.get(0).getId());
         // Initial setup of nodes and connections. Hard coded for now
         //ArrayList<MapNode> hallwayNodes = new ArrayList<>();
 

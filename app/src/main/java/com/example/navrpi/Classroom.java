@@ -13,6 +13,14 @@ public class Classroom {
 
     private String building;
 
+    private String node;
+
+    public Classroom(String nb, String b, String nd) {
+        number = nb;
+        building = b;
+        node = nd;
+    }
+
     public String getNumber() { return number; }
 
     public void setBuilding(String building) {
@@ -23,5 +31,13 @@ public class Classroom {
 
     public void setNumber(String number) {
         this.number = number;
+    }
+
+    public String getNode() {
+        return node;
+    }
+
+    public void setNode(String node) {
+        this.node = node;
     }
 }

@@ -13,6 +13,14 @@ public class Professor {
 
     private String lastName;
 
+    private String node;
+
+    public Professor(String f, String l, String n) {
+        firstName = f;
+        lastName = l;
+        node = n;
+    }
+
     public String getFirstName() {return firstName;}
 
     public void setFirstName(String firstName) {
@@ -23,6 +31,14 @@ public class Professor {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public void setNode(String node) {
+        this.node = node;
+    }
+
+    public String getNode() {
+        return node;
     }
 }
 
