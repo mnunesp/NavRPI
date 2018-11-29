@@ -65,7 +65,7 @@ public class buildings extends AppCompatActivity {
                         item1,
                         new DividerDrawerItem(),
                         item2,
-                        new SecondaryDrawerItem().withName("Setting")
+                        new SecondaryDrawerItem().withName("Buildings")
                 )
                 .withOnDrawerItemClickListener(new com.mikepenz.materialdrawer.Drawer.OnDrawerItemClickListener() {
                     @Override
