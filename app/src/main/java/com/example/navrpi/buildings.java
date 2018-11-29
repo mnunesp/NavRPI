@@ -42,7 +42,6 @@ public class buildings extends AppCompatActivity {
     int floor = 2;
     ArrayList<MapNode> nodes = new ArrayList<>();
 
-    //private DrawerLayout mDrawerLayout;
 
 
 
