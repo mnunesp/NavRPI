@@ -73,6 +73,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     int PROXIMITY_RADIUS = 10000;
     double latitude, longitude;
     double end_latitude, end_longitude;
+    private static final Double lat = 42.730052689755404;
+    private static final Double lng = -73.67669504076449;
+    private static final LatLng union = new LatLng(lat,lng);
+    private static final int DEFAULT_ZOOM = 15;
 
 
     @Override
@@ -128,6 +132,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
+        //Map styling
+        try {
+            // Customise the styling of the base map using a JSON object defined
+            // in a raw resource file.
+            boolean success = googleMap.setMapStyle(
+                    MapStyleOptions.loadRawResourceStyle(
+                            this, R.raw.mapstyle));
+
+            if (!success) {
+                Log.e(Tag, "Style parsing failed.");
+            }
+        } catch (Resources.NotFoundException e) {
+            Log.e(Tag, "Can't find style. Error: ", e);}
+
         //Initialize Google Play Services
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ContextCompat.checkSelfPermission(this,
@@ -143,7 +161,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         mMap.setOnMarkerDragListener(this);
         mMap.setOnMarkerClickListener(this);
-
+        moveCamera(union, DEFAULT_ZOOM, "RPI_UNION");
+        addLocations();
     }
 
 
@@ -176,7 +195,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onClick(View v)
     {
         Object dataTransfer[] = new Object[2];
-        GetNearbyPlacesData getNearbyPlacesData = new GetNearbyPlacesData();
+        //GetNearbyPlacesData getNearbyPlacesData = new GetNearbyPlacesData();
 
         switch(v.getId()) {
             case R.id.B_search: {
@@ -207,19 +226,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 }
             }
             break;
-
-
-            case R.id.B_to:
-                dataTransfer = new Object[3];
-                String url = getDirectionsUrl();
-                GetDirectionsData getDirectionsData = new GetDirectionsData();
-                dataTransfer[0] = mMap;
-                dataTransfer[1] = url;
-                dataTransfer[2] = new LatLng(end_latitude, end_longitude);
-                getDirectionsData.execute(dataTransfer);
-
-                break;
-
 
         }
     }
@@ -401,6 +407,25 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         Log.d("end_lat",""+end_latitude);
         Log.d("end_lng",""+end_longitude);
+    }
+
+    private void moveCamera(LatLng latLng, float zoom, String title) {
+        Log.d(Tag, "moveCamera :moving the camera to: lat: " + latLng.latitude + ", lng: " + latLng.longitude);
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
+
+        if(!title.equals("My Location")){
+            MarkerOptions options = new MarkerOptions()
+                    .position(latLng)
+                    .title(title);
+            mMap.addMarker(options);
+            hideSoftKeyboard();
+        }
+    }
+
+    private void hideSoftKeyboard(){
+        Log.d(Tag, "Hiding keyboard");
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
     }
 }
 /*
