@@ -28,10 +28,10 @@ public class Verticies {
         this.id = this.dest + this.source + Integer.toString(this.distance);
     }
 
-    public Verticies(String a, String b, int d) {
-        this.dest = a;
-        this.source = b;
-        this.distance = d;
+    public Verticies( String s, String d, int dist) {
+        this.dest = d;
+        this.source = s;
+        this.distance = dist;
         this.id = this.dest + this.source + Integer.toString(this.distance);
     }
 
