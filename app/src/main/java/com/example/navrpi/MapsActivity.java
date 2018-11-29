@@ -105,7 +105,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
 
-
+/*
     private void init(){
         Log.d(Tag, "init: initializing");
 
@@ -124,7 +124,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
 
-    }
+    }*/
 
     private boolean CheckGooglePlayServices() {
         GoogleApiAvailability googleAPI = GoogleApiAvailability.getInstance();
@@ -255,6 +255,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 intent.putExtra("buildingName", (String)mMark.getTitle());
                 startActivity(intent);
             }
+            break;
 
             case R.id.Directions: {
                 Log.d(Tag, "onCLick: clicked on Get Directions");
@@ -266,6 +267,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 dataTransfer[2] = new LatLng(end_latitude, end_longitude);
                 getDirectionsData.execute(dataTransfer);
             }
+            break;
 
 
         }
@@ -427,7 +429,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public boolean onMarkerClick(Marker marker) {
-        marker.setDraggable(true);
+        mMark = marker;
+
+        Log.d("Marker", "onClick: clicked on marker");
+        planButton.setVisibility(View.VISIBLE);
+        directionButton.setVisibility(View.VISIBLE);
+        //marker.setDraggable(true);
         return false;
     }
 
