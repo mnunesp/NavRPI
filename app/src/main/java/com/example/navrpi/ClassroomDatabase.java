@@ -6,7 +6,7 @@ import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 
-@Database(entities = {Classroom.class}, version = 1)
+@Database(entities = {Classroom.class}, version = 2)
 public abstract class ClassroomDatabase extends RoomDatabase {
     public abstract ClassroomDao classroomDao();
 

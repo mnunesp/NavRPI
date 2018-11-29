@@ -22,6 +22,10 @@ public interface NodeDao {
     @Query("DELETE FROM mapNode")
     void DeleteAll();
 
+    @Query("SELECT * FROM mapNode WHERE building LIKE :b")
+    List<MapNode> getNodesByBuilding(String b);
+
+
     @Query("SELECT * FROM mapNode WHERE id LIKE :i")
     List<MapNode> searchID(String i);
 

@@ -5,85 +5,102 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.content.Intent;
+import android.support.v7.widget.Toolbar;
 
 import com.github.barteksc.pdfviewer.PDFView;
 import com.github.barteksc.pdfviewer.listener.OnDrawListener;
+import com.mikepenz.materialdrawer.DrawerBuilder;
+import com.mikepenz.materialdrawer.model.DividerDrawerItem;
+import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
+import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import static com.example.navrpi.R.layout.drawerlayout;
 
 public class buildings extends AppCompatActivity {
 
 
     PDFView pdfView;
     TextView showValue;
-    //String[] floors = {"walkerlab2000.pdf","walkerlab3000.pdf","walkerlab6000.pdf"};
-    int floor = 2;
+    String building;
+    int floor = 0;
     List<MapNode> nodes = new ArrayList<>();
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_buildings);
+        new DrawerBuilder().withActivity(this).build();
+
+        PrimaryDrawerItem item1 = new PrimaryDrawerItem().withIdentifier(1).withName("Menu");
+        SecondaryDrawerItem item2 = new SecondaryDrawerItem().withIdentifier(2).withName("Professors");
+        Toolbar toolbar = findViewById(R.id.toolbar);
 
 
-        //MapNode startNodes[] = new MapNode[] {new MapNode(525,250, 3, "Walker"), new MapNode(525,625, 3, "Walker"),
-          //      new MapNode(1025,625, 3, "Walker"),new MapNode(665,350, 2, "Walker"),
-            //    new MapNode(665,650, 2, "Walker"), new MapNode(1100,650, 2, "Walker")};
-        //nodes.addAll(Arrays.asList(startNodes));
-        NodeDao nDao = NodeDatabase.getDatabase(getApplicationContext()).nodeDao();
-
-        //for (int i = 0; i < 6; i++) nDao.insert(startNodes[i]);
-        List<MapNode> databaseNodes = nDao.searchBuildFloor("Walker");
-
-        // Initial setup of nodes and connections. Hard coded for now
-        //ArrayList<MapNode> hallwayNodes = new ArrayList<>();
-
-
-        //MapNode node1 = new MapNode(450,200, 3, "Walker");
-        //MapNode node2 = new MapNode(450,550, 3, "Walker");
-        //MapNode node3 = new MapNode(950,550, 3, "Walker");
-        //MapNode node4 = new MapNode(950,650, 3, "Walker");
-        //MapNode node5 = new MapNode(1000,650, 3, "Walker");
-
-        //node1.addAdjacentNode(node2,1);
-        //node1.addAdjacentNode(node3,1);
-        //node2.addAdjacentNode(node3,1);
-        //node3.addAdjacentNode(node4,1);
-        //node4.addAdjacentNode(node5,1);
+        //create the drawer and remember the 'Drawer' result object
+        com.mikepenz.materialdrawer.Drawer result = new DrawerBuilder()
+                .withActivity(this)
+                .withToolbar(toolbar)
+                .addDrawerItems(
+                        item1,
+                        new DividerDrawerItem(),
+                        item2,
+                        new SecondaryDrawerItem().withName("Setting")
+                )
+                .withOnDrawerItemClickListener(new com.mikepenz.materialdrawer.Drawer.OnDrawerItemClickListener() {
+                    @Override
+                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                       //do something with clicked item
+                        return false;
+                    }
+                })
+                .build();
 
 
-        //Bathroom nodes
-        //MapNode bathroomNodes[] = new MapNode[] {new MapNode(350,650, 3, "Walker")};
-        //bathroomNodes[0].addAdjacentNode(hallwayNodes.get(1),1);
 
-        //for (int i = 0; i < bathroomNodes.length; ++i) {
-          //  bathroomNodes[i].setNodeType("bathroom");
-        //}
+        building = "Walker";
 
-        //nodes.addAll(hallwayNodes);
-        //nodes.addAll(Arrays.asList(bathroomNodes));
-
-        //nodes = nDao.getAllNodes();
-
+        //setContentView(R.layout.activity_buildings);
         pdfView = findViewById(R.id.pdfView);
         pdfView.fromAsset("walker.pdf").pages(floor).enableDoubletap(false).load();
 
         showValue = (TextView) findViewById(R.id.floor);
-
     }
 
+
     // Renders the current floor plan and nodes
-    private void Draw() {
+    private void Draw(int floor) {
+
+        NodeDao nDao = NodeDatabase.getDatabase(getApplicationContext()).nodeDao();
+        VerticiesDao vDao = VerticiesDatabase.getDatabase(getApplicationContext()).VerticiesDao();
+
+        nodes = nDao.searchBuildFloor(building);
+
 
         Drawer d = new Drawer(buildings.this, (ArrayList<MapNode>) nodes, pdfView);
-        OnDrawListener DrawL = d.createDrawListener(floor);
+
+        OnDrawListener DrawL = d.createDrawListener(floor, vDao);
+
 
         pdfView.fromAsset("walker.pdf").pages(floor).enableDoubletap(false).onDraw(DrawL).load();
 
@@ -96,8 +113,7 @@ public class buildings extends AppCompatActivity {
         if (floor == 5) return;
         floor++;
         showValue.setText(Integer.toString(floor+1)); //counting starts at 0...
-        //pdfView = findViewById(R.id.pdfView);
-        Draw();
+        Draw(floor);
 
 
     }
@@ -106,8 +122,7 @@ public class buildings extends AppCompatActivity {
         if (floor == 0)return; //bottom floor
         floor--;
         showValue.setText(Integer.toString(floor+1)); //counting starts at 0...
-        //pdfView = findViewById(R.id.pdfView);
-        Draw();
+        Draw(floor);
 
     }
 
@@ -116,7 +131,7 @@ public class buildings extends AppCompatActivity {
 
         Intent intent = new Intent(buildings.this, RoutePreviewActivity.class);
         intent.putExtra("building_name", "walker");
-        //intent.putExtra("nodes", nodes);
+        intent.putExtra("building", building);
         startActivity(intent);
 
 
