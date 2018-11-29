@@ -13,7 +13,8 @@ public class BuildingAsyncPopulate extends AsyncTask<Void, Void, Void> {
     @Override
     protected Void doInBackground(final Void... params){
         bDao.deleteAll();
-        Building[] bds = {new Building("Walker",42.7308527,-73.6825036 ),
+        Building[] bds = {
+                new Building("Walker",42.7308527,-73.6825036 ),
                 new Building("Union",42.73005269,-73.67669504),
                 new Building("West Hall",42.7316975,-73.6831504),
                 new Building("Winslow",42.730946,-73.684265),
