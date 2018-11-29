@@ -12,35 +12,40 @@ import com.github.barteksc.pdfviewer.listener.OnDrawListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Drawer {
 
-    private ArrayList<MapNode> nodes;
+    private ArrayList<? extends MapNode> nodes;
+    private List<Verticies> verts;
     private Context context;
     private PDFView pview;
 
     public Drawer(Context c, PDFView p) {
         context = c;
         nodes = new ArrayList<MapNode>();
+        verts = new ArrayList<Verticies>();
         pview = p;
     }
 
-    public Drawer(Context c, ArrayList<MapNode> n, PDFView p) {
+    public Drawer(Context c, ArrayList<? extends MapNode> n, PDFView p) {
         context = c;
         nodes = n;
         pview = p;
+        verts = new ArrayList<Verticies>();
+
     }
 
 
-    public OnDrawListener createDrawListener(final int floor) {
+    public OnDrawListener createDrawListener(final int floor, final VerticiesDao vDao) {
 
 
         OnDrawListener DrawL = new OnDrawListener() {
             @Override
             public void onLayerDrawn(Canvas canvas, float pageWidth, float pageHeight, int displayedPage) {
-                System.out.println("Testing");
-                System.out.println("PageWidth: " + pageWidth + " pageHeight: " + pageHeight + " Page: " + displayedPage);
+                //System.out.println("Testing");
+                //System.out.println("PageWidth: " + pageWidth + " pageHeight: " + pageHeight + " Page: " + displayedPage);
                 Paint dotcolor = new Paint();
                 Paint linecolor = new Paint();
 
@@ -72,17 +77,20 @@ public class Drawer {
                         }
 
                         // Draw lines between connecting nodes
-                        //HashMap<MapNode, Integer> adjacentNodes = nodes.get(i).getAdjacentNodes();
-                        HashMap<MapNode, Integer> adjacentNodes = new HashMap<MapNode,Integer>();
-                        for (MapNode key : adjacentNodes.keySet()) {
+                        verts = vDao.getAllEdges();
 
-                            if (nodes.contains(key) && key.getFloor() == floor) {
-                                float adjacentposx = key.getX() * pdfzoom;
-                                float adjacentposy = key.getY() * pdfzoom;
+
+                        for (Verticies vert : verts) {
+
+                            MapNode tempsource = new MapNode(vert.getSource());
+                            MapNode tempdest = new MapNode(vert.getDest());
+
+                            if (nodes.get(i).equals(tempsource) && nodes.contains(tempdest)) {
+                                float adjacentposx = nodes.get(nodes.indexOf(tempdest)).getX() * pdfzoom;
+                                float adjacentposy = nodes.get(nodes.indexOf(tempdest)).getY() * pdfzoom;
+                                System.out.println("xpos: " + adjacentposx + " ypos: " + adjacentposy);
                                 canvas.drawLine(nodedrawpositionx, nodedrawpositiony, adjacentposx, adjacentposy, linecolor);
                             }
-
-
 
                         }
 

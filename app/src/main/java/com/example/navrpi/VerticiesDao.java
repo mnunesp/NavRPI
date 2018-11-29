@@ -23,6 +23,9 @@ public interface VerticiesDao {
     @Query("DELETE FROM verticies")
     void DeleteAll();
 
-    @Query("SELECT * FROM verticies WHERE 'dest' LIKE :d OR 'source' LIKE :d")
-    List<Verticies> getAssociatedEdges(String d);
+    @Query("SELECT * FROM verticies WHERE source = :s")
+    List<Verticies> getEdgesBySource(String s);
+
+    @Query("SELECT * FROM verticies WHERE dest = :d")
+    List<Verticies> getEdgesByDest(String d);
 }

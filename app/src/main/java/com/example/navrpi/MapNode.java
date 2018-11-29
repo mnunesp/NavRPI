@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 
 import java.util.HashMap;
 
+
 @Entity
 public class MapNode {
 
@@ -33,6 +34,14 @@ public class MapNode {
         building = "";
     }
 
+    MapNode(String i) {
+        x = 0;
+        y = 0;
+        floor = 0;
+        building = "";
+        id = i;
+    }
+
     MapNode(int xi, int yi) {
         x = xi;
         y = yi;
@@ -51,6 +60,23 @@ public class MapNode {
         nodeType = type;
         distance = Integer.MAX_VALUE;
         id = bld + Integer.toString(fl) + Integer.toString(xi) + Integer.toString(yi);
+
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+
+        if (this == obj) {
+            return true;
+        }
+
+        if (obj == null || obj.getClass()!= this.getClass()) {
+            return false;
+        }
+
+        MapNode n = (MapNode) obj;
+
+        return (this.id.equals(n.getId()));
 
     }
 
