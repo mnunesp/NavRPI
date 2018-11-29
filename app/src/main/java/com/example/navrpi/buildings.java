@@ -56,6 +56,7 @@ public class buildings extends AppCompatActivity {
         SecondaryDrawerItem item2 = new SecondaryDrawerItem().withIdentifier(2).withName("Professors");
         Toolbar toolbar = findViewById(R.id.toolbar);
 
+
         //create the drawer and remember the 'Drawer' result object
         com.mikepenz.materialdrawer.Drawer result = new DrawerBuilder()
                 .withActivity(this)
@@ -74,7 +75,6 @@ public class buildings extends AppCompatActivity {
                     }
                 })
                 .build();
-
 
 
 
