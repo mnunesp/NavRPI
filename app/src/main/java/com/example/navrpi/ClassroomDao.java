@@ -9,8 +9,11 @@ import java.util.List;
 @Dao
 public interface ClassroomDao {
 
+    //Data access object for classroom database. Provides wrappers for standard SQL queries.
+    //the top line defines the SQL, the bottom line the associated java function
+
     @Query("SELECT * FROM classroom WHERE number LIKE :search")
-    Classroom searchNumber(int search);
+    List<Classroom> searchNumber(int search);
 
     @Insert
     void insert(Classroom rm);

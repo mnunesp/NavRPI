@@ -7,6 +7,8 @@ import android.support.annotation.NonNull;
 @Entity
 public class Professor {
 
+    //simple class to old data about professors, including name and node (room)
+
     @NonNull
     @PrimaryKey
     private String firstName;

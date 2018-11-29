@@ -12,7 +12,7 @@ public class BuildingAsyncPopulate extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected Void doInBackground(final Void... params){
-        bDao.deleteAll();
+        bDao.deleteAll();  //clear anything that's somehow already there (Room can crash if we try inserting the same thing twice)
         Building[] bds = {new Building("Walker",42.7308527,-73.6825036 ),
                 new Building("Union",42.73005269,-73.67669504),
                 new Building("West Hall",42.7316975,-73.6831504),

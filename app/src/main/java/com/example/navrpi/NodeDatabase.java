@@ -12,11 +12,15 @@ public abstract class NodeDatabase extends RoomDatabase {
 
     private static volatile NodeDatabase INSTANCE;
 
-    static NodeDatabase getDatabase( final Context context) {
+    static NodeDatabase getDatabase( final Context context) { //method to construct the database, a singleton class
         if (INSTANCE == null) {
-            synchronized (NodeDatabase.class) {
+            synchronized (NodeDatabase.class) { //this stuff checks to make sure we only ever make one
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(), NodeDatabase.class, "node_database").fallbackToDestructiveMigration().allowMainThreadQueries().addCallback(sRoomDatabaseCallback).build();
+                    //this obnoxious line builds the database, with the following options:
+                    //destructive migration - we do not allow users to enter data, so we do not have to worry about migrating it from schema update to schema update
+                    //main thread queries allowed - to allow access throughout the program
+                    //added callback (below) - for initializing database with data
                 }
             }
         }
@@ -28,7 +32,7 @@ public abstract class NodeDatabase extends RoomDatabase {
 
                 @Override
                 public void onOpen (SupportSQLiteDatabase db){
-                    super.onOpen(db);
+                    super.onOpen(db); //used to initialize, passed as argument to builder statement
                     new NodeAsyncPopulate(INSTANCE).execute();
                 }
             };
