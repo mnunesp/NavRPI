@@ -6,18 +6,17 @@ import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 
-@Database(entities = {Professor.class}, version = 1)
-public abstract class ProfessorDatabase extends RoomDatabase {
+@Database(entities = {Building.class}, version = 1)
+public abstract class BuildingDatabase extends RoomDatabase {
+    public abstract BuildingDao buildingDao();
 
-    public abstract ProfessorDao professorDao();
+    private static volatile BuildingDatabase INSTANCE;
 
-    private static volatile ProfessorDatabase INSTANCE;
-
-    static ProfessorDatabase getDatabase( final Context context) {
+    static BuildingDatabase getDatabase( final Context context) {
         if (INSTANCE == null) {
-            synchronized (ProfessorDatabase.class) {
+            synchronized (BuildingDatabase.class) {
                 if (INSTANCE == null) {
-                    INSTANCE = Room.databaseBuilder(context.getApplicationContext(), ProfessorDatabase.class, "professor_database").fallbackToDestructiveMigration().allowMainThreadQueries().addCallback(sRoomDatabaseCallback).build();
+                    INSTANCE = Room.databaseBuilder(context.getApplicationContext(), BuildingDatabase.class, "building_database").fallbackToDestructiveMigration().allowMainThreadQueries().addCallback(sRoomDatabaseCallback).build();
                 }
             }
         }
@@ -30,7 +29,7 @@ public abstract class ProfessorDatabase extends RoomDatabase {
                 @Override
                 public void onOpen (SupportSQLiteDatabase db){
                     super.onOpen(db);
-                    new ProfessorAsyncPopulate(INSTANCE).execute();
+                    new BuildingAsyncPopulate(INSTANCE).execute();
                 }
             };
 }

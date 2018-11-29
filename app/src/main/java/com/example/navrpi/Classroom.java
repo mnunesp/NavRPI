@@ -9,9 +9,9 @@ public class Classroom {
 
     @NonNull
     @PrimaryKey
-    private String number = "113";
+    private String number;
 
-    private String building = "Darrin Communication Center";
+    private String building;
 
     public String getNumber() { return number; }
 

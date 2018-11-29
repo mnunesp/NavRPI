@@ -30,6 +30,7 @@ import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import static com.example.navrpi.R.layout.drawerlayout;
 
@@ -38,9 +39,9 @@ public class buildings extends AppCompatActivity {
 
     PDFView pdfView;
     TextView showValue;
-    //String[] floors = {"walkerlab2000.pdf","walkerlab3000.pdf","walkerlab6000.pdf"};
-    int floor = 2;
-    ArrayList<MapNode> nodes = new ArrayList<>();
+    String building;
+    int floor = 0;
+    List<MapNode> nodes = new ArrayList<>();
 
 
 
@@ -77,45 +78,7 @@ public class buildings extends AppCompatActivity {
 
 
 
-        // TODO: Query database for nodes and connections
-        // Initial setup of nodes and connections. Hard coded for now
-        ArrayList<MapNode> hallwayNodes = new ArrayList<>();
-
-        MapNode node1 = new MapNode(450,200, 3, "Walker");
-        MapNode node2 = new MapNode(450,550, 3, "Walker");
-        MapNode node3 = new MapNode(950,550, 3, "Walker");
-        MapNode node4 = new MapNode(950,650, 3, "Walker");
-        MapNode node5 = new MapNode(1000,650, 3, "Walker");
-
-        node1.addAdjacentNode(node2,1);
-        node1.addAdjacentNode(node3,1);
-        node2.addAdjacentNode(node3,1);
-        node3.addAdjacentNode(node4,1);
-        node4.addAdjacentNode(node5,1);
-
-        node1.setNodeType("hallway");
-        node2.setNodeType("hallway");
-        node3.setNodeType("hallway");
-        node4.setNodeType("hallway");
-        node5.setNodeType("hallway");
-
-        hallwayNodes.add(node1);
-        hallwayNodes.add(node2);
-        hallwayNodes.add(node3);
-        hallwayNodes.add(node4);
-        hallwayNodes.add(node5);
-
-
-        //Bathroom nodes
-        MapNode bathroomNodes[] = new MapNode[] {new MapNode(350,650, 3, "Walker")};
-        bathroomNodes[0].addAdjacentNode(hallwayNodes.get(1),1);
-
-        for (int i = 0; i < bathroomNodes.length; ++i) {
-            bathroomNodes[i].setNodeType("bathroom");
-        }
-
-        nodes.addAll(hallwayNodes);
-        nodes.addAll(Arrays.asList(bathroomNodes));
+        building = "Walker";
 
         //setContentView(R.layout.activity_buildings);
         pdfView = findViewById(R.id.pdfView);
@@ -126,10 +89,18 @@ public class buildings extends AppCompatActivity {
 
 
     // Renders the current floor plan and nodes
-    private void Draw() {
+    private void Draw(int floor) {
 
-        Drawer d = new Drawer(buildings.this, nodes, pdfView);
-        OnDrawListener DrawL = d.createDrawListener(floor);
+        NodeDao nDao = NodeDatabase.getDatabase(getApplicationContext()).nodeDao();
+        VerticiesDao vDao = VerticiesDatabase.getDatabase(getApplicationContext()).VerticiesDao();
+
+        nodes = nDao.searchBuildFloor(building);
+
+
+        Drawer d = new Drawer(buildings.this, (ArrayList<MapNode>) nodes, pdfView);
+
+        OnDrawListener DrawL = d.createDrawListener(floor, vDao);
+
 
         pdfView.fromAsset("walker.pdf").pages(floor).enableDoubletap(false).onDraw(DrawL).load();
 
@@ -142,8 +113,7 @@ public class buildings extends AppCompatActivity {
         if (floor == 5) return;
         floor++;
         showValue.setText(Integer.toString(floor+1)); //counting starts at 0...
-        //pdfView = findViewById(R.id.pdfView);
-        Draw();
+        Draw(floor);
 
 
     }
@@ -152,8 +122,7 @@ public class buildings extends AppCompatActivity {
         if (floor == 0)return; //bottom floor
         floor--;
         showValue.setText(Integer.toString(floor+1)); //counting starts at 0...
-        //pdfView = findViewById(R.id.pdfView);
-        Draw();
+        Draw(floor);
 
     }
 
@@ -162,7 +131,7 @@ public class buildings extends AppCompatActivity {
 
         Intent intent = new Intent(buildings.this, RoutePreviewActivity.class);
         intent.putExtra("building_name", "walker");
-        //intent.putExtra("nodes", nodes);
+        intent.putExtra("building", building);
         startActivity(intent);
 
 

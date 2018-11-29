@@ -1,37 +1,45 @@
 package com.example.navrpi;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 public class BuildingNavigator {
 
     private String currentBuilding;
-    private LinkedList<MapNode> nodes;
+    private LinkedList<RoutingMapNode> nodes;
+
+    private HashMap<String, ArrayList<RoutingMapNode>> shortestpaths = new HashMap<>();
 
     public BuildingNavigator() {
 
     }
 
-    public BuildingNavigator(String buildingName, LinkedList<MapNode> inputNodes) {
+
+    public BuildingNavigator(String buildingName, LinkedList<RoutingMapNode> inputNodes) {
         currentBuilding = buildingName;
         nodes = inputNodes; // TODO: Want to change to query DB
     }
 
-    public ArrayList<Integer> Navigate(MapNode sourceNode) {
+    public void Navigate(RoutingMapNode sourceNode) {
         sourceNode.setDistance(0);
 
-        Set<MapNode> settledNodes = new HashSet<>();
-        Set<MapNode> unsettledNodes = new HashSet<>();
+        Set<RoutingMapNode> settledNodes = new HashSet<>();
+        Set<RoutingMapNode> unsettledNodes = new HashSet<>();
         unsettledNodes.add(sourceNode);
 
         while (unsettledNodes.size() != 0) {
-            MapNode currentNode = getLowestDistanceNode(unsettledNodes);
+            RoutingMapNode currentNode = getLowestDistanceNode(unsettledNodes);
             unsettledNodes.remove(currentNode);
-            for (Map.Entry<MapNode, Integer> adjacencyPair : currentNode.getAdjacentNodes().entrySet()) {
-                MapNode adjacentNode = adjacencyPair.getKey();
+
+
+            for (Map.Entry<RoutingMapNode, Integer> adjacencyPair : currentNode.getAdjacentNodes().entrySet()) {
+
+                RoutingMapNode adjacentNode = adjacencyPair.getKey();
                 Integer edgeWeigh = adjacencyPair.getValue();
 
                 if (!settledNodes.contains(adjacentNode)) {
@@ -42,23 +50,23 @@ public class BuildingNavigator {
             settledNodes.add(currentNode);
         }
 
-        return new ArrayList<>();
+
     }
 
-    private static void CalculateMinimumDistance(MapNode evaluationNode, Integer edgeWeigh, MapNode sourceNode) {
+    private void CalculateMinimumDistance(RoutingMapNode evaluationNode, Integer edgeWeigh, RoutingMapNode sourceNode) {
         Integer sourceDistance = sourceNode.getDistance();
         if (sourceDistance + edgeWeigh < evaluationNode.getDistance()) {
             evaluationNode.setDistance(sourceDistance + edgeWeigh);
-            LinkedList<MapNode> shortestPath = new LinkedList<>(sourceNode.getShortestPath());
+            LinkedList<RoutingMapNode> shortestPath = new LinkedList<>(sourceNode.getShortestPath());
             shortestPath.add(sourceNode);
             evaluationNode.setShortestPath(shortestPath);
         }
     }
 
-    private static MapNode getLowestDistanceNode(Set<MapNode> unsettledNodes) {
-        MapNode lowestDistanceNode = null;
+    private static RoutingMapNode getLowestDistanceNode(Set<RoutingMapNode> unsettledNodes) {
+        RoutingMapNode lowestDistanceNode = null;
         int lowestDistance = Integer.MAX_VALUE;
-        for (MapNode node : unsettledNodes) {
+        for (RoutingMapNode node : unsettledNodes) {
             int nodeDistance = node.getDistance();
             if (nodeDistance < lowestDistance) {
                 lowestDistance = nodeDistance;
