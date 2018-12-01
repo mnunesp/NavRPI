@@ -9,18 +9,22 @@ public class Professor {
 
     //simple class to old data about professors, including name and node (room)
 
-    @NonNull
-    @PrimaryKey
+
     private String firstName;
 
     private String lastName;
 
     private String node;
 
+    @NonNull
+    @PrimaryKey
+    private String id;
+
     public Professor(String firstName, String lastName, String node) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.node = node;
+        this.id = this.firstName + this.lastName;
     }
 
     public String getFirstName() {return firstName;}
@@ -41,6 +45,15 @@ public class Professor {
 
     public String getNode() {
         return node;
+    }
+
+    @NonNull
+    public String getId() {
+        return id;
+    }
+
+    public void setId(@NonNull String id) {
+        this.id = id;
     }
 }
 
