@@ -11,7 +11,7 @@ public class VerticiesAsyncPopulate extends AsyncTask<Void, Void, Void> {
     @Override
     protected Void doInBackground(final Void... params) {
         vDao.DeleteAll();
-        //Verticies[] v = new Verticies[]{new Verticies("Walker3450200","Walker3450550",1), new Verticies("Walker3450200")}
+        //clear anything that's somehow already there (Room can crash if we try inserting the same thing twice)
         vDao.insert(new Verticies("Walker3450550","Walker3450200",1));
         vDao.insert(new Verticies("Walker3450200","Walker3450550",1));
         vDao.insert(new Verticies("Walker3950550","Walker3450550",1));
