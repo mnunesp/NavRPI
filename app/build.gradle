@@ -35,6 +35,9 @@ dependencies {
 
     implementation 'android.arch.persistence.room:runtime:1.1.1'
 
+    implementation('com.mikepenz:materialdrawer:4.6.4@aar') {
+        transitive = true
+    }
     /*{
 
         exclude group: 'com.android.support'

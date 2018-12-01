@@ -40,6 +40,7 @@ public class buildings extends AppCompatActivity {
     PDFView pdfView;
     TextView showValue;
     String building;
+    String pdfstring;
     int floor = 0;
     List<MapNode> nodes = new ArrayList<>();
 
@@ -51,6 +52,7 @@ public class buildings extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_buildings);
         new DrawerBuilder().withActivity(this).build();
+
 
         PrimaryDrawerItem item1 = new PrimaryDrawerItem().withIdentifier(1).withName("Menu");
         SecondaryDrawerItem item2 = new SecondaryDrawerItem().withIdentifier(2).withName("Professors");
@@ -78,11 +80,12 @@ public class buildings extends AppCompatActivity {
 
 
 
-        building = "Walker";
+        building = getIntent().getStringExtra("buildingName").toLowerCase();
 
         //setContentView(R.layout.activity_buildings);
         pdfView = findViewById(R.id.pdfView);
-        pdfView.fromAsset("walker.pdf").pages(floor).enableDoubletap(false).load();
+        pdfstring = building + ".pdf";
+        pdfView.fromAsset(pdfstring).pages(floor).enableDoubletap(false).load();
 
         showValue = (TextView) findViewById(R.id.floor);
     }
@@ -102,7 +105,7 @@ public class buildings extends AppCompatActivity {
         OnDrawListener DrawL = d.createDrawListener(floor, vDao);
 
 
-        pdfView.fromAsset("walker.pdf").pages(floor).enableDoubletap(false).onDraw(DrawL).load();
+        pdfView.fromAsset(pdfstring).pages(floor).enableDoubletap(false).onDraw(DrawL).load();
 
     }
 
@@ -130,7 +133,7 @@ public class buildings extends AppCompatActivity {
     public void PreviewRoute (View view) {
 
         Intent intent = new Intent(buildings.this, RoutePreviewActivity.class);
-        intent.putExtra("building_name", "walker");
+        intent.putExtra("building_name", building);
         intent.putExtra("building", building);
         startActivity(intent);
 
