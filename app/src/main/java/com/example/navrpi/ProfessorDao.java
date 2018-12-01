@@ -9,8 +9,11 @@ import java.util.List;
 @Dao
 public interface ProfessorDao {
 
+    //Data access object for professor database. Provides wrappers for standard SQL queries.
+    //the top line defines the SQL, the bottom line the associated java function
+
     @Query("SELECT * FROM professor WHERE lastName LIKE :search")
-    Professor searchLastName(String search);
+    List<Professor> searchLastName(String search);
 
     @Insert
     void insert(Professor pro);

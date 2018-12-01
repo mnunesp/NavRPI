@@ -11,6 +11,9 @@ import java.util.List;
 @Dao
 public interface VerticiesDao {
 
+    //Data access object for edge/vertex database. Provides wrappers for standard SQL queries.
+    //the top line defines the SQL, the bottom line the associated java function
+
     @Insert
     void insert(Verticies v);
 

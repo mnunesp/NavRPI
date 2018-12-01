@@ -54,7 +54,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         LocationListener,
         OnInfoWindowClickListener,
         GoogleMap.OnMarkerClickListener,
-        GoogleMap.OnMarkerDragListener
+        GoogleMap.OnMarkerDragListener,
+        GoogleMap.OnMapClickListener
 {
 
     private static final String Tag = "MapsActivity";
@@ -183,6 +184,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.setOnInfoWindowClickListener(this);
         mMap.setOnMarkerDragListener(this);
         mMap.setOnMarkerClickListener(this);
+        mMap.setOnMapClickListener(this);
         moveCamera(union, DEFAULT_ZOOM, "RPI_UNION");
         addLocations();
     }
@@ -436,6 +438,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         directionButton.setVisibility(View.VISIBLE);
         //marker.setDraggable(true);
         return false;
+    }
+
+    @Override
+    public void onMapClick(LatLng point) {
+        Log.d("Map", "onClick");
+        planButton.setVisibility(View.INVISIBLE);
+        directionButton.setVisibility(View.INVISIBLE);
     }
 
     @Override

@@ -12,7 +12,7 @@ public class ClassroomAsyncPopulate extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected Void doInBackground(final Void... params){
-        cDao.deleteAll();
+        cDao.deleteAll(); //clear anything that's somehow already there (Room can crash if we try inserting the same thing twice)
         cDao.insert(new Classroom("3113","Walker","Walker31000650"));
         cDao.insert(new Classroom("3222","walker","Walker3950650"));
         return null;

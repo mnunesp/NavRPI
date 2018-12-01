@@ -8,6 +8,8 @@ import android.support.annotation.NonNull;
 @Entity
 public class Verticies {
 
+    //class for representing the edges between nodes
+
     private String source;
     private String dest;
 
