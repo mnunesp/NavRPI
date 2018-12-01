@@ -248,6 +248,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         }
                     }
                 }
+                this.hideSoftKeyboard();
             }
             break;
 
@@ -445,6 +446,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Log.d("Map", "onClick");
         planButton.setVisibility(View.INVISIBLE);
         directionButton.setVisibility(View.INVISIBLE);
+        this.hideSoftKeyboard();
     }
 
     @Override
