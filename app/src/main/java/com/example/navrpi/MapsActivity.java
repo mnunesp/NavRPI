@@ -42,6 +42,7 @@ import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
+import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.maps.DirectionsApi;
 import com.google.maps.GeoApiContext;
@@ -85,6 +86,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private Button directionButton;
     private Marker mMark;
     private String serverKey= "MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC7S9r2FAFDAD2PDTczw/OF3iZjNmKmeoq97acHYBOAUGGe1gxaYeWkpyBQB888EZxrhEYXOPdeYe3qxjg1UkocH4OwzTZn5y8iNh8uU6nxuX1XPP1gsrvNw2HvA7fz0PfkcmyVwdJAksYEBJ7BU9OMm7EOSe2LX/FxLa15phsMxI4wABgrgrPzvagVb3JMCNJmr5wbv7wOVDJtd34N2B2y2xsa7vvXZoREpXX0889KqAx7HXc7h0dyk0j0no9nGURRyINy4Qvx3SixUDjOVt2Nk8eF+U21tzBH9/AcPcV08E9c3dDhU7TXzONSFnx8BwCOEIPI0BNPLwM/G8FBMZMLAgMBAAECggEAPwsP50+hgxd0IRAeOiblc/RsMG3wc8AArmBtne5pcgHcchXzb4LPRQZaOoX+a+Yzo/8QhqWOoi7NYf6Zkd0ig+fZsGvKuduXwmi8QyA3Ll20wmYNlXxj+aUf9E9onkGDB1q6kQf+CO0+iMCzXTillwka5kfdFNJVFzb8Utul9Dwp+viu3yJPyP2+F/hVo+o5ENZaS1XiqMDs9lmBZnB0e9sq8s7S27lAD6C8d971WX6Jgcfju42d7AX8DCzr3Iv9sPj3VZm1OQNmdo7PgAH9h6jrD7MBr11y9VSl8wb416fW6GIJ86iA+aHMDhTvv7L7Lk7x0T9zyybVSW+F+6HZWQKBgQD8+c1RTWDmqp5nBpBpWVu1ZQmF7cZY3zwLnacLs/QGuPHkqi9yjaA+K8y0txLYt0tCa7KisEDAA5TKdezGjv0xTAjK0/+EIFiO2RxUoW9vrT3Sw9AQaaJ6mv5F8uGXR1oiu7+8itSMnnGRFeoSpV5aE8YkwCBHNAHBAm0+I1PBEwKBgQC9iQzZCBfwSGEJNOhJ5G7FhwUZ0kUBao0sd0wzAwYKf0v9ne9P4jRiZDM+WRHwfsPS9p5hIJ2rzUwYhSWu2u5vWiH3IUwW6Tm7UdBa0LDkJBGeG8edKV5tMYydgpX7ASMviKke33cIN0g2Io+4HM1qkErGpBR8xfi5RaAicgWdKQKBgCqbcCdHXxC6n98+TchQko+kqsvx1jxVrOlP7jicYHdZYvRebYtfqyONgPbW9selZ3mSZg3cnas5bzACWJTAtIg/BCQVPK3mPMQicREX94rZpNYAwORixkjcHgNt+uzdyaKb+Jkq0M22Se5jwH7Pd2q4deDuswELE1iMrhWPIaYdAoGAbs7wNvZ3YGBAcux+nayyYkMk5Uq8Uy6jKIr6fpxW7M4tdDHglnhuHdPs7ZePWGYUQIM0Zx51b9rPkUpOlKKkYW91ihDqdj6WJQCY6m8167t2nVQqaKSl8vrT9cZBvwSUOJcSIN2Orrv7OMMN+RrFsXZ4cRe+bpAjcNXW4Cx/QbkCgYEAqEqZ4/xd6kBxLaWbiYJ+c6gfswX1WCoIvSeY3Tfn1nVYmpGVXXcIuLC2PNaESts6jMfsytnjA8gTB1uMSQ4SfUVr7L5qj6uxM1wZFURkCh//N1XAa02SuH6zU1yGxOX3Hxk7Q+SKBwR3A7K0Cl7gTA+Lx/8/R3sPG/2f8zdKtZQ=";
+    private List<Polyline> polylines = new ArrayList<Polyline>();
+    private Marker myMarker;
 
 
 
@@ -234,7 +237,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             Address myAddress = addressList.get(i);
                             LatLng latLng = new LatLng(myAddress.getLatitude(), myAddress.getLongitude());
                             markerOptions.position(latLng);
-                            mMap.addMarker(markerOptions);
+                            myMarker.remove();
+                            myMarker = mMap.addMarker(markerOptions);
                             mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
                         }
                     }
@@ -254,13 +258,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             case R.id.Directions: {
                 Log.d(Tag, "onCLick: clicked on Get Directions");
                 //theDirections(new LatLng(latitude, longitude),new LatLng(end_latitude, end_longitude));
+                if(polylines.size()>0) {
+                    for (Polyline line : polylines) {
+                        line.remove();
+                    }
+                    polylines.clear();
+                }
 
-                dataTransfer = new Object[3];
+                dataTransfer = new Object[4];
                 String url = getDirectionsUrl();
                 GetDirectionsData getDirectionsData = new GetDirectionsData();
                 dataTransfer[0] = mMap;
                 dataTransfer[1] = url;
                 dataTransfer[2] = new LatLng(end_latitude, end_longitude);
+                dataTransfer[3] = polylines;
                 getDirectionsData.execute(dataTransfer);
 
             }
@@ -441,6 +452,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         planButton.setVisibility(View.INVISIBLE);
         directionButton.setVisibility(View.INVISIBLE);
         this.hideSoftKeyboard();
+        myMarker.remove();
     }
 
     @Override
@@ -470,7 +482,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             MarkerOptions options = new MarkerOptions()
                     .position(latLng)
                     .title(title);
-            mMap.addMarker(options);
+            myMarker = mMap.addMarker(options);
             hideSoftKeyboard();
         }
     }

@@ -20,6 +20,7 @@ import org.joda.time.DateTime;
 
 import java.io.IOException;
 import java.nio.DoubleBuffer;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -32,6 +33,8 @@ public class GetDirectionsData extends AsyncTask<Object,String,String> {
     String googleDirectionsData;
     String duration, distance;
     LatLng latLng;
+    List<Polyline> polylines;
+
     private static final String Tag = "GetDirectionsData";
 
 
@@ -40,7 +43,7 @@ public class GetDirectionsData extends AsyncTask<Object,String,String> {
         mMap = (GoogleMap)objects[0];
         url = (String)objects[1];
         latLng = (LatLng)objects[2];
-
+        polylines = (List<Polyline>)objects[3];
 
 
         DownloadUrl downloadUrl = new DownloadUrl();
@@ -68,6 +71,7 @@ public class GetDirectionsData extends AsyncTask<Object,String,String> {
     {
 
         int count = directionsList.length;
+
         for(int i = 0;i<count;i++)
         {
             PolylineOptions options = new PolylineOptions();
@@ -75,7 +79,8 @@ public class GetDirectionsData extends AsyncTask<Object,String,String> {
             options.width(10);
             options.addAll(PolyUtil.decode(directionsList[i]));
 
-            mMap.addPolyline(options);
+            Polyline poly = mMap.addPolyline(options);
+            polylines.add(poly);
         }
     }
 
