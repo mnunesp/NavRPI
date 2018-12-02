@@ -11,6 +11,9 @@ import java.util.HashMap;
 @Entity
 public class MapNode {
 
+    //node class, has an ID (build from the building name and coordinates, as that is guaranteed to be unique).
+    //a building name (which building it appears in), a floor, and coordinates that coorespond to its location on the PDF
+
     @PrimaryKey
     @NonNull
     private String id;
