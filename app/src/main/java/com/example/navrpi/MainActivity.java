@@ -18,6 +18,10 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private static final int ERROR_DIALOG_REQUEST = 9001;
 
+    /**
+     * initialize the actitities
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,6 +32,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * checks to make sure that all google services are functioning
+     * @return true is funcitoning esle false
+     */
     public boolean isServices(){
         Log.d(TAG, "isServicesOK: checking google services version");
 
@@ -48,6 +56,9 @@ public class MainActivity extends AppCompatActivity {
         return false;
     }
 
+    /**
+     * sets up the two buttons following the splash screen
+     */
     private void init(){
         Button btnMap = findViewById(R.id.btnMap);
         Button btnBuilding =  findViewById(R.id.btnBuilding);

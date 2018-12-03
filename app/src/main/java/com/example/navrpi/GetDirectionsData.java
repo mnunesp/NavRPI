@@ -38,6 +38,13 @@ public class GetDirectionsData extends AsyncTask<Object,String,String> {
     private static final String Tag = "GetDirectionsData";
 
 
+    /**
+     * This begins upon execute call in the MapsActivity. It
+     * downloads the proper url from the directions data and
+     * sends it to be read
+     * @param objects
+     * @return
+     */
     @Override
     protected String doInBackground(Object... objects) {
         mMap = (GoogleMap)objects[0];
@@ -57,6 +64,10 @@ public class GetDirectionsData extends AsyncTask<Object,String,String> {
         return googleDirectionsData;
     }
 
+    /**
+     * the following is done after the execution of the above code
+     * @param s
+     */
     @Override
     protected void onPostExecute(String s) {
 
@@ -64,9 +75,13 @@ public class GetDirectionsData extends AsyncTask<Object,String,String> {
         DataParser parser = new DataParser();
         directionsList = parser.parseDirections(s);
         displayDirection(directionsList);
-
     }
 
+    /**
+     * Adds the polylines to the map to show the directions from current
+     * position to requested position
+     * @param directionsList
+     */
     public void displayDirection(String[] directionsList)
     {
 
