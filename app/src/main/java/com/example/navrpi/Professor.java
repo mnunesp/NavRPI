@@ -50,13 +50,13 @@ public class Professor {
         return node;
     }
 
+
     public String getId() {
         return id;
     }
 
     public void setId(@NonNull String id) {
         this.id = id;
-
     }
 
     public static String getRest(ArrayList<Professor> profs) {
@@ -76,6 +76,7 @@ public class Professor {
             System.out.print((first));
         }
         return toReturn;
+
     }
 }
 

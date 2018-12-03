@@ -28,6 +28,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
@@ -144,7 +145,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
     }
 
 
@@ -152,6 +152,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      *   functionally to prevent the system from trying to use them
      * then causing an error.
      */
+
     private boolean CheckGooglePlayServices() {
         GoogleApiAvailability googleAPI = GoogleApiAvailability.getInstance();
         int result = googleAPI.isGooglePlayServicesAvailable(this);
@@ -296,6 +297,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     {
         Object dataTransfer[] = new Object[2];
         //GetNearbyPlacesData getNearbyPlacesData = new GetNearbyPlacesData();
+
 
         switch(v.getId()) {
             case R.id.B_search: {

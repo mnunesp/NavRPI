@@ -1,29 +1,18 @@
 package com.example.navrpi;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.support.design.widget.NavigationView;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Gravity;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
+
+import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ListView;
+
 import android.widget.TextView;
 import android.content.Intent;
 import android.support.v7.widget.Toolbar;
 
 import com.github.barteksc.pdfviewer.PDFView;
 import com.github.barteksc.pdfviewer.listener.OnDrawListener;
+import com.github.barteksc.pdfviewer.listener.OnTapListener;
 import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.model.DividerDrawerItem;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
@@ -45,6 +34,7 @@ public class buildings extends AppCompatActivity {
     PDFView pdfView;
     TextView showValue;
     String building;
+    String pdfstring;
     int floor = 0;
     List<MapNode> nodes = new ArrayList<>();
 
@@ -59,7 +49,6 @@ public class buildings extends AppCompatActivity {
 
         final ProfessorDao pDao = ProfessorDatabase.getDatabase(getApplicationContext()).professorDao();
         ArrayList<Professor> profs = (ArrayList<Professor>) pDao.getAllProfessors();
-        final String rest = Professor.getRest(profs);
 
 
 
@@ -96,11 +85,13 @@ public class buildings extends AppCompatActivity {
 
 
 
-        building = "Walker";
+        building = getIntent().getStringExtra("buildingName").toLowerCase();
 
-        //setContentView(R.layout.activity_buildings);
+        setContentView(R.layout.activity_buildings);
         pdfView = findViewById(R.id.pdfView);
-        pdfView.fromAsset("walker.pdf").pages(floor).enableDoubletap(false).load();
+        pdfstring = building + ".pdf";
+        pdfView.fromAsset(pdfstring).pages(floor).enableDoubletap(false).load();
+
 
         showValue = (TextView) findViewById(R.id.floor);
     }
@@ -121,8 +112,16 @@ public class buildings extends AppCompatActivity {
 
         OnDrawListener DrawL = d.createDrawListener(floor, vDao);
 
+        OnTapListener TapL = new OnTapListener() {
+            @Override
+            public boolean onTap(MotionEvent e) {
 
-        pdfView.fromAsset("walker.pdf").pages(floor).enableDoubletap(false).onDraw(DrawL).load();
+                System.out.println("Test boy");
+                return true;
+            }
+        };
+
+        pdfView.fromAsset(pdfstring).pages(floor).onTap(TapL).onDraw(DrawL).load();
 
     }
 
@@ -150,7 +149,7 @@ public class buildings extends AppCompatActivity {
     public void PreviewRoute (View view) {
 
         Intent intent = new Intent(buildings.this, RoutePreviewActivity.class);
-        intent.putExtra("building_name", "walker");
+        intent.putExtra("building_name", building);
         intent.putExtra("building", building);
         startActivity(intent);
 
