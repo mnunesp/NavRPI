@@ -3,6 +3,7 @@ package com.example.navrpi;
 
 import android.Manifest;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
@@ -15,6 +16,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -42,6 +44,15 @@ import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.mikepenz.materialdrawer.DrawerBuilder;
+import com.mikepenz.materialdrawer.model.DividerDrawerItem;
+import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
+import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
+
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -103,10 +114,44 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+
+        getLocationPermission();
+
+        final BuildingDao bDao = BuildingDatabase.getDatabase(getApplicationContext()).buildingDao();
+        ArrayList<Building> buils = (ArrayList<Building>) bDao.getAllBuildings();
+        final String rest = Building.getBuildings(buils);
+
+        PrimaryDrawerItem item1 = new PrimaryDrawerItem().withIdentifier(1).withName("Menu");
+        SecondaryDrawerItem item2 = new SecondaryDrawerItem().withIdentifier(2).withName("Buildings");
+        Toolbar toolbar = findViewById(R.id.toolbar);
+
+
+        //create the drawer and remember the 'Drawer' result object
+        com.mikepenz.materialdrawer.Drawer result = new DrawerBuilder()
+                .withActivity(this)
+                .withToolbar(toolbar)
+                .addDrawerItems(
+                        item1,
+                        new DividerDrawerItem(),
+                        item2
+                        //new SecondaryDrawerItem().withName("Buildings")
+                )
+                .withOnDrawerItemClickListener(new com.mikepenz.materialdrawer.Drawer.OnDrawerItemClickListener() {
+                    @Override
+                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                        //do something with clicked item
+                        setContentView(R.layout.building_scroll);
+                        TextView txtView = findViewById(R.id.restBuil);
+                        txtView.setText(rest);
+                        return false;
+                    }
+                })
+                .build();
     }
 
 
-/*
+
+
     private void init(){
         Log.d(Tag, "init: initializing");
 
@@ -490,4 +535,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Toast.makeText(this, "Info window clicked",
                 Toast.LENGTH_SHORT).show();
     }
+
+    public void walkerClicked(View view){
+        Intent intent = new Intent(MapsActivity.this, buildings.class);
+        startActivity(intent);
+    }
+
+    public void backButton(View view){
+
+        Intent intent = new Intent(MapsActivity.this, MapsActivity.class);
+        startActivity(intent);
+    }
+
+
+
 }
