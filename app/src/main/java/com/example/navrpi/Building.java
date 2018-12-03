@@ -11,8 +11,6 @@ import java.util.ArrayList;
 @Entity
 public class Building {
 
-    //simple class to hold buildings, that is their name and their location for the google maps marker
-
     @NonNull
     @PrimaryKey
     private String name;
@@ -56,7 +54,6 @@ public class Building {
         this.lng = lng;
 
     }
-
     public static String getBuildings(ArrayList<Building> buils){
         String result = "";
         for (int i = 0; i < buils.size(); i++){
