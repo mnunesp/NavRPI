@@ -80,7 +80,8 @@ public class buildings extends AppCompatActivity {
                     @Override
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
                        //do something with clicked item
-                        setContentView(R.layout.professor_scroll);
+                        //setContentView(R.layout.professor_scroll);
+                        return true;
                     }
                 })
                 .build();
