@@ -363,7 +363,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 getDeviceLocation();
 
             }
-
+            break;
+            case R.id.ic_school: {
+                Log.d(Tag, "onClick: clicked gps icon");
+                moveCamera(union, DEFAULT_ZOOM, "RPI_UNION");
+            }
+            break;
         }
     }
 
@@ -373,23 +378,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         try {
-            if (mLocationPermissionsGranted) {
-                Task location = mFusedLocationProviderClient.getLastLocation();
-                location.addOnCompleteListener(new OnCompleteListener() {
-                    @Override
-                    public void onComplete(@NonNull Task task) {
-                        if (task.isSuccessful()) {
-                            Log.d(Tag, "onComplete: found location");
-                            Location currentLocation = (Location) task.getResult();
-
-                            moveCamera(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()), DEFAULT_ZOOM, "My_location");
-                        } else {
-                            Log.d(Tag, "onComplete: current location is null");
-                            Toast.makeText(MapsActivity.this, "unable to get current location", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-            }
+                LatLng latLng = new LatLng(latitude, longitude);
+                mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+                mMap.animateCamera(CameraUpdateFactory.zoomTo(11));
         } catch (SecurityException e) {
             Log.d(Tag, "getDeviceLocation: SecurityException: " + e.getMessage());
         }
