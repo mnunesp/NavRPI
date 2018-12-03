@@ -171,6 +171,7 @@ public class buildings extends AppCompatActivity {
         pdfView.fromAsset("walker.pdf").pages(2).enableDoubletap(false).load();
         showValue.setText(Integer.toString(2));
         Draw(floor);
+
     }
 
 
