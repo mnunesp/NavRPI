@@ -22,32 +22,44 @@
         android:layout_marginLeft="10dp"
         android:elevation = "10dp"
         android:background = "@drawable/white_border"
-        android:id = "@+id/relLayout1">
+        android:id = "@+id/relLayout1" >
 
-        <ImageButton
+        <!--ImageButton
             android:id="@+id/menuButton"
             android:layout_width="40dp"
             android:layout_height="match_parent"
             android:layout_alignParentStart="true"
-            app:srcCompat="@drawable/ic_menu" />
+            app:srcCompat="@drawable/ic_menu" /-->
 
         <ImageView
             android:id="@+id/ic_magnify"
             android:layout_width="15dp"
             android:layout_height="15dp"
             android:layout_centerVertical="true"
-            android:layout_toEndOf="@+id/menuButton"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="10dp"
             android:contentDescription=""
             android:src="@drawable/ic_magnify" />
 
+        <Button
+            android:id="@+id/B_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/TF_location"
+            android:layout_alignParentEnd="true"
+            android:onClick="onClick"
+            android:text="Search"/>
+
+
         <EditText
-            android:id="@+id/input_search"
+            android:id="@+id/TF_location"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_centerVertical="true"
-            android:layout_toEndOf="@+id/ic_magnify"
+            android:layout_alignParentStart="true"
+            android:layout_marginLeft="10dp"
             android:background="@null"
-            android:hint="Enter desired location"
+            android:hint="Enter location/professor"
             android:imeOptions="actionSearch"
             android:importantForAutofill="no"
             android:inputType="text"
@@ -68,6 +80,33 @@
         android:scaleType="centerCrop"
         android:src="@drawable/ic_gps" />
 
+    <Button
+        android:id="@+id/Inspect_Building"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginBottom="8dp"
+        android:onClick="onClick"
+        android:text="Inspect Floors" />
+
+    <Button
+        android:id="@+id/Directions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="0dp"
+        android:layout_marginRight="-248dp"
+        android:layout_marginBottom="5dp"
+        android:onClick="onClick"
+        android:text="Get Directions" />
+
+
+
 
 
 </RelativeLayout>
+
+    <!--android:layout_toEndOf="@+id/menuButton"-->

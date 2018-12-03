@@ -10,6 +10,9 @@ import java.util.List;
 @Dao
 public interface NodeDao {
 
+    //Data access object for node database. Provides wrappers for standard SQL queries.
+    //the top line defines the SQL, the bottom line the associated java function
+
     @Query("SELECT * FROM mapNode WHERE building LIKE :build")
     List<MapNode> searchBuildFloor(String build);
 

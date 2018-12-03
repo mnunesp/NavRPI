@@ -10,6 +10,9 @@ import java.util.List;
 @Dao
 public interface BuildingDao {
 
+    //Data access object for building database. Provides wrappers for standard SQL queries.
+    //the top line defines the SQL, the bottom line the associated java function
+
     @Query("SELECT * FROM building WHERE name LIKE :build")
     List<Building> searchBuild(String build);
 

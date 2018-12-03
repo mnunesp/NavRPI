@@ -7,6 +7,8 @@ import android.support.annotation.NonNull;
 @Entity
 public class Classroom {
 
+    //represents classrooms, with number building and location w/ a node
+
     @NonNull
     @PrimaryKey
     private String number;
