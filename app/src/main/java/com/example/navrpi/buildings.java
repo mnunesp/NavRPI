@@ -11,9 +11,11 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -22,6 +24,7 @@ import android.support.v7.widget.Toolbar;
 
 import com.github.barteksc.pdfviewer.PDFView;
 import com.github.barteksc.pdfviewer.listener.OnDrawListener;
+import com.github.barteksc.pdfviewer.listener.OnTapListener;
 import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.model.DividerDrawerItem;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
@@ -87,6 +90,7 @@ public class buildings extends AppCompatActivity {
         pdfstring = building + ".pdf";
         pdfView.fromAsset(pdfstring).pages(floor).enableDoubletap(false).load();
 
+
         showValue = (TextView) findViewById(R.id.floor);
     }
 
@@ -104,8 +108,16 @@ public class buildings extends AppCompatActivity {
 
         OnDrawListener DrawL = d.createDrawListener(floor, vDao);
 
+        OnTapListener TapL = new OnTapListener() {
+            @Override
+            public boolean onTap(MotionEvent e) {
 
-        pdfView.fromAsset(pdfstring).pages(floor).enableDoubletap(false).onDraw(DrawL).load();
+                System.out.println("Test boy");
+                return true;
+            }
+        };
+
+        pdfView.fromAsset(pdfstring).pages(floor).onTap(TapL).onDraw(DrawL).load();
 
     }
 

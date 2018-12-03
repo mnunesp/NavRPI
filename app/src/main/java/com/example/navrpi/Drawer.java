@@ -65,7 +65,7 @@ public class Drawer {
                         float noderadius = 20;
 
 
-                        // TODO: Move all this to separate function
+
                         // Draw icons based on node type
                         if (nodes.get(i).getNodeType().equals("hallway")) {
                             canvas.drawCircle(nodedrawpositionx, nodedrawpositiony, noderadius, dotcolor);
@@ -85,7 +85,10 @@ public class Drawer {
                             MapNode tempsource = new MapNode(vert.getSource());
                             MapNode tempdest = new MapNode(vert.getDest());
 
-                            if (nodes.get(i).equals(tempsource) && nodes.contains(tempdest)) {
+                            // Only display vert if dest node is on same floor
+                            if (nodes.get(i).equals(tempsource) && nodes.contains(tempdest) &&
+                                    nodes.get(nodes.indexOf(tempdest)).getFloor() == floor) {
+
                                 float adjacentposx = nodes.get(nodes.indexOf(tempdest)).getX() * pdfzoom;
                                 float adjacentposy = nodes.get(nodes.indexOf(tempdest)).getY() * pdfzoom;
                                 System.out.println("xpos: " + adjacentposx + " ypos: " + adjacentposy);
