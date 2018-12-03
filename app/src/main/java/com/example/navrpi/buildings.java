@@ -9,8 +9,10 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
+import android.widget.Button;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -19,6 +21,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.content.Intent;
 import android.support.v7.widget.Toolbar;
+import org.w3c.dom.Text;
+import static android.os.Build.VERSION_CODES.P;
 
 import com.github.barteksc.pdfviewer.PDFView;
 import com.github.barteksc.pdfviewer.listener.OnDrawListener;
@@ -52,6 +56,11 @@ public class buildings extends AppCompatActivity {
         setContentView(R.layout.activity_buildings);
         new DrawerBuilder().withActivity(this).build();
 
+
+        final ProfessorDao pDao = ProfessorDatabase.getDatabase(getApplicationContext()).professorDao();
+        ArrayList<Professor> profs = (ArrayList<Professor>) pDao.getAllProfessors();
+        final String rest = Professor.getRest(profs);
+
         PrimaryDrawerItem item1 = new PrimaryDrawerItem().withIdentifier(1).withName("Menu");
         SecondaryDrawerItem item2 = new SecondaryDrawerItem().withIdentifier(2).withName("Professors");
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -71,7 +80,7 @@ public class buildings extends AppCompatActivity {
                     @Override
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
                        //do something with clicked item
-                        return false;
+                        setContentView(R.layout.professor_scroll);
                     }
                 })
                 .build();
@@ -135,6 +144,18 @@ public class buildings extends AppCompatActivity {
         startActivity(intent);
 
 
+    }
+
+    public void backButton(View view){
+        Intent intent = new Intent(buildings.this, buildings.class);
+        startActivity(intent);
+    }
+    public void prof1Clicked(View view){
+        setContentView(R.layout.activity_buildings);
+        int profFloor = new MapNode("Walker3950550").getFloor();
+        pdfView.fromAsset("walker.pdf").pages(2).enableDoubletap(false).load();
+        showValue.setText(Integer.toString(2));
+        Draw(floor);
     }
 
 }

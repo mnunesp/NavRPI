@@ -2,7 +2,7 @@ package com.example.navrpi;
 
 
 import android.Manifest;
-
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
@@ -15,6 +15,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -23,6 +24,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -43,13 +45,17 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
 import com.google.android.gms.maps.model.Polyline;
-import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.maps.DirectionsApi;
 import com.google.maps.GeoApiContext;
 import com.google.maps.android.PolyUtil;
 import com.google.maps.errors.ApiException;
 import com.google.maps.model.DirectionsResult;
 import com.google.maps.model.TravelMode;
+import com.mikepenz.materialdrawer.DrawerBuilder;
+import com.mikepenz.materialdrawer.model.DividerDrawerItem;
+import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
+import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
 import org.joda.time.DateTime;
 
@@ -181,6 +187,40 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.setOnMapClickListener(this);
         moveCamera(union, DEFAULT_ZOOM, "RPI_UNION");
         addLocations();
+        drawer_init();
+    }
+
+    private void drawer_init(){
+        final BuildingDao bDao = BuildingDatabase.getDatabase(getApplicationContext()).buildingDao();
+        ArrayList<Building> buils = (ArrayList<Building>) bDao.getAllBuildings();
+        final String rest = Building.getBuildings(buils);
+
+        PrimaryDrawerItem item1 = new PrimaryDrawerItem().withIdentifier(1).withName("Menu");
+        SecondaryDrawerItem item2 = new SecondaryDrawerItem().withIdentifier(2).withName("Buildings");
+        Toolbar toolbar = findViewById(R.id.toolbar);
+
+
+        //create the drawer and remember the 'Drawer' result object
+        com.mikepenz.materialdrawer.Drawer result = new DrawerBuilder()
+                .withActivity(this)
+                .withToolbar(toolbar)
+                .addDrawerItems(
+                        item1,
+                        new DividerDrawerItem(),
+                        item2
+                        //new SecondaryDrawerItem().withName("Buildings")
+                )
+                .withOnDrawerItemClickListener(new com.mikepenz.materialdrawer.Drawer.OnDrawerItemClickListener() {
+                    @Override
+                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                        //do something with clicked item
+                        setContentView(R.layout.building_scroll);
+                        TextView txtView = findViewById(R.id.restBuil);
+                        txtView.setText(rest);
+                        return false;
+                    }
+                })
+                .build();
     }
 
 
@@ -497,5 +537,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onInfoWindowClick(Marker marker) {
         Toast.makeText(this, "Info window clicked",
                 Toast.LENGTH_SHORT).show();
+    }
+
+    public void walkerClicked(View view){
+        Intent intent = new Intent(MapsActivity.this, buildings.class);
+        startActivity(intent);
+    }
+
+    public void backButton(View view){
+
+        Intent intent = new Intent(MapsActivity.this, MapsActivity.class);
+        startActivity(intent);
     }
 }

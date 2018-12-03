@@ -56,4 +56,17 @@ public class Building {
         this.lng = lng;
 
     }
+
+    public static String getBuildings(ArrayList<Building> buils){
+        String result = "";
+        for (int i = 0; i < buils.size(); i++){
+            if (buils.get(i).getName().equals("Walker")){
+                //nothing
+            }
+            else {
+                result = result + buils.get(i).getName() + "\n";
+            }
+        }
+        return result;
+    }
 }
