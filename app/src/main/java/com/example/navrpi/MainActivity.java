@@ -65,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view){
                 Intent intent = new Intent(MainActivity.this, buildings.class);
+                intent.putExtra("buildingName", "Walker");
                 startActivity(intent);
                 //MainActivity.this.finish();
             }

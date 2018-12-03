@@ -75,8 +75,8 @@ public class RoutePreviewActivity extends AppCompatActivity {
         }
 
         // Define start and destination nodes
-        RoutingMapNode startNode = mapNodes.get(4);
-        RoutingMapNode endNode = mapNodes.get(8);
+        RoutingMapNode startNode = mapNodes.get(5);
+        RoutingMapNode endNode = mapNodes.get(28);
 
 
         for (RoutingMapNode n : mapNodes) {

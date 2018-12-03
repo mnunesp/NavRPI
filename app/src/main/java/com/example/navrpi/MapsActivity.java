@@ -267,6 +267,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Object dataTransfer[] = new Object[2];
         //GetNearbyPlacesData getNearbyPlacesData = new GetNearbyPlacesData();
 
+
         switch(v.getId()) {
             case R.id.B_search: {
                 EditText tf_location = (EditText) findViewById(R.id.TF_location);
