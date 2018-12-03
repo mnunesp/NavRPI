@@ -47,8 +47,6 @@ public class buildings extends AppCompatActivity {
         setContentView(R.layout.activity_buildings);
         new DrawerBuilder().withActivity(this).build();
 
-        final ProfessorDao pDao = ProfessorDatabase.getDatabase(getApplicationContext()).professorDao();
-        ArrayList<Professor> profs = (ArrayList<Professor>) pDao.getAllProfessors();
 
 
 

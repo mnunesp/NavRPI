@@ -540,6 +540,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     public void walkerClicked(View view){
         Intent intent = new Intent(MapsActivity.this, buildings.class);
+        intent.putExtra("buildingName","Walker");
         startActivity(intent);
     }
 
