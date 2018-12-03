@@ -90,7 +90,7 @@ public class buildings extends AppCompatActivity {
         setContentView(R.layout.activity_buildings);
         pdfView = findViewById(R.id.pdfView);
         pdfstring = building + ".pdf";
-        pdfView.fromAsset(pdfstring).pages(floor).enableDoubletap(false).load();
+        pdfView.fromAsset(pdfstring).pages(floor).load();
 
 
         showValue = (TextView) findViewById(R.id.floor);
