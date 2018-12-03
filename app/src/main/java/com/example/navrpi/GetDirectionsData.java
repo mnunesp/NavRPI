@@ -10,13 +10,8 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
-import com.google.maps.DirectionsApi;
 import com.google.maps.android.PolyUtil;
-import com.google.maps.GeoApiContext;
-import com.google.maps.model.DirectionsResult;
-import com.google.maps.model.TravelMode;
 
-import org.joda.time.DateTime;
 
 import java.io.IOException;
 import java.nio.DoubleBuffer;
