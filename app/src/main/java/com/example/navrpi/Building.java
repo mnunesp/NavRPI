@@ -11,6 +11,8 @@ import java.util.ArrayList;
 @Entity
 public class Building {
 
+    //simple class to hold buildings, that is their name and their location for the google maps marker
+
     @NonNull
     @PrimaryKey
     private String name;
@@ -58,7 +60,7 @@ public class Building {
         String result = "";
         for (int i = 0; i < buils.size(); i++){
             if (buils.get(i).getName().equals("Walker")){
-                //nothing
+            //nothing
             }
             else {
                 result = result + buils.get(i).getName() + "\n";
