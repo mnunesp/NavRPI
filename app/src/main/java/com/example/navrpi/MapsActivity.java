@@ -3,6 +3,7 @@ package com.example.navrpi;
 
 import android.Manifest;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
@@ -88,8 +89,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         getLocationPermission();
 
+        final BuildingDao bDao = BuildingDatabase.getDatabase(getApplicationContext()).buildingDao();
+        ArrayList<Building> buils = (ArrayList<Building>) bDao.getAllBuildings();
+        final String rest = Building.getBuildings(buils);
+
         PrimaryDrawerItem item1 = new PrimaryDrawerItem().withIdentifier(1).withName("Menu");
-        SecondaryDrawerItem item2 = new SecondaryDrawerItem().withIdentifier(2).withName("Professors");
+        SecondaryDrawerItem item2 = new SecondaryDrawerItem().withIdentifier(2).withName("Buildings");
         Toolbar toolbar = findViewById(R.id.toolbar);
 
 
@@ -100,13 +105,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .addDrawerItems(
                         item1,
                         new DividerDrawerItem(),
-                        item2,
-                        new SecondaryDrawerItem().withName("Buildings")
+                        item2
+                        //new SecondaryDrawerItem().withName("Buildings")
                 )
                 .withOnDrawerItemClickListener(new com.mikepenz.materialdrawer.Drawer.OnDrawerItemClickListener() {
                     @Override
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
                         //do something with clicked item
+                        setContentView(R.layout.building_scroll);
+                        TextView txtView = findViewById(R.id.restBuil);
+                        txtView.setText(rest);
                         return false;
                     }
                 })
@@ -362,6 +370,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     .position(b.get(i).coordinate1())
                     .title(b.get(i).getName()));
         }
+    }
+
+    public void walkerClicked(View view){
+        Intent intent = new Intent(MapsActivity.this, buildings.class);
+        startActivity(intent);
+    }
+
+    public void backButton(View view){
+
+        Intent intent = new Intent(MapsActivity.this, MapsActivity.class);
+        startActivity(intent);
     }
 
 

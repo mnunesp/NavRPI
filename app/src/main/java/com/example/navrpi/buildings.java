@@ -11,10 +11,12 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.content.Intent;
@@ -28,10 +30,13 @@ import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static android.os.Build.VERSION_CODES.P;
 import static com.example.navrpi.R.layout.drawerlayout;
 
 public class buildings extends AppCompatActivity {
@@ -52,9 +57,18 @@ public class buildings extends AppCompatActivity {
         setContentView(R.layout.activity_buildings);
         new DrawerBuilder().withActivity(this).build();
 
+        final ProfessorDao pDao = ProfessorDatabase.getDatabase(getApplicationContext()).professorDao();
+        ArrayList<Professor> profs = (ArrayList<Professor>) pDao.getAllProfessors();
+        final String rest = Professor.getRest(profs);
+
+
+
         PrimaryDrawerItem item1 = new PrimaryDrawerItem().withIdentifier(1).withName("Menu");
         SecondaryDrawerItem item2 = new SecondaryDrawerItem().withIdentifier(2).withName("Professors");
         Toolbar toolbar = findViewById(R.id.toolbar);
+
+        //Professor 'Drawer' contains professor names
+
 
 
         //create the drawer and remember the 'Drawer' result object
@@ -64,13 +78,17 @@ public class buildings extends AppCompatActivity {
                 .addDrawerItems(
                         item1,
                         new DividerDrawerItem(),
-                        item2,
-                        new SecondaryDrawerItem().withName("Buildings")
+                        item2
+                        //new SecondaryDrawerItem().withName("Buildings")
                 )
                 .withOnDrawerItemClickListener(new com.mikepenz.materialdrawer.Drawer.OnDrawerItemClickListener() {
                     @Override
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
                        //do something with clicked item
+
+                        setContentView(R.layout.professor_scroll);
+
+
                         return false;
                     }
                 })
@@ -93,6 +111,8 @@ public class buildings extends AppCompatActivity {
 
         NodeDao nDao = NodeDatabase.getDatabase(getApplicationContext()).nodeDao();
         VerticiesDao vDao = VerticiesDatabase.getDatabase(getApplicationContext()).VerticiesDao();
+
+
 
         nodes = nDao.searchBuildFloor(building);
 
@@ -136,5 +156,22 @@ public class buildings extends AppCompatActivity {
 
 
     }
+
+    public void backButton(View view){
+
+        Intent intent = new Intent(buildings.this, buildings.class);
+        startActivity(intent);
+    }
+
+    public void prof1Clicked(View view){
+
+
+        setContentView(R.layout.activity_buildings);
+        int profFloor = new MapNode("Walker3950550").getFloor();
+        pdfView.fromAsset("walker.pdf").pages(2).enableDoubletap(false).load();
+        showValue.setText(Integer.toString(2));
+        Draw(floor);
+    }
+
 
 }
