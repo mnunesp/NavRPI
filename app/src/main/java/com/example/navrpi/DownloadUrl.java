@@ -17,6 +17,12 @@ import java.net.URL;
 
 public class DownloadUrl {
 
+    /**
+     * This reads the url so that the query can be make
+     * @param myUrl passed in from and created in MapsActivity
+     * @return
+     * @throws IOException
+     */
     public String readUrl(String myUrl) throws IOException
     {
         String data = "";
