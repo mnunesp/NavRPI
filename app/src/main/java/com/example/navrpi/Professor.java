@@ -5,6 +5,8 @@ import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 import java.util.ArrayList;
 
+import java.util.ArrayList;
+
 @Entity
 public class Professor {
 
@@ -48,6 +50,25 @@ public class Professor {
         return node;
     }
 
+    public static String getRest(ArrayList<Professor> profs) {
+        String toReturn = "";
+        String first = "";
+        String last = "";
+        for (int i = 0; i < profs.size(); i++) {
+            if ((profs.get(i).getFirstName().equals("Michael")) || (profs.get(i).getFirstName().equals("Alex"))) {
+                first = "";
+                last = "";
+            }
+            else{
+                first = profs.get(i).getFirstName();
+                last = profs.get(i).getLastName();
+
+            }
+            toReturn = toReturn + (first + " " + last + "\n");
+            System.out.print((first));
+        }
+        return toReturn;
+
     @NonNull
     public String getId() {
         return id;
@@ -55,6 +76,7 @@ public class Professor {
 
     public void setId(@NonNull String id) {
         this.id = id;
+
     }
 
     public static String getRest(ArrayList<Professor> profs) {

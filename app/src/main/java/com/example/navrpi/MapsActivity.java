@@ -214,9 +214,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     @Override
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
                         //do something with clicked item
-                        setContentView(R.layout.building_scroll);
-                        TextView txtView = findViewById(R.id.restBuil);
-                        txtView.setText(rest);
+                        //setContentView(R.layout.building_scroll);
+                        //TextView txtView = findViewById(R.id.restBuil);
+                        //txtView.setText(rest);
                         return false;
                     }
                 })
