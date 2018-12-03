@@ -78,7 +78,22 @@
         android:layout_marginEnd="10dp"
         android:contentDescription=""
         android:scaleType="centerCrop"
-        android:src="@drawable/ic_gps" />
+        android:src="@drawable/ic_gps"
+        android:onClick="onClick"
+        />
+
+    <ImageView
+        android:id="@+id/ic_school"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_below="@id/relLayout1"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="60dp"
+        android:layout_marginEnd="10dp"
+        android:contentDescription=""
+        android:onClick="onClick"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_school" />
 
     <Button
         android:id="@+id/Inspect_Building"

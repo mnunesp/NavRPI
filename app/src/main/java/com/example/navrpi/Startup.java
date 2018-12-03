@@ -8,10 +8,13 @@ import android.view.WindowManager;
 
 public class Startup extends AppCompatActivity {
 
+    /**
+     * This is the first oncreate called. Send view to splash activity
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -22,6 +25,9 @@ public class Startup extends AppCompatActivity {
 
     }
 
+    /**
+     * This is the splash screen. It stays up for 3 seconds then goes to main activity
+     */
     private class LogoLauncher extends Thread{
         public void run(){
             try{

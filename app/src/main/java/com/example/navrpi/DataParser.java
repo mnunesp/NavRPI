@@ -17,6 +17,12 @@ import java.util.List;
 class DataParser {
 
 
+    /**
+     * This gets approximately how long it will take to get from current position to the
+     * desired loaction
+     * @param googleDirectionsJson
+     * @return
+     */
     private HashMap<String,String> getDuration(JSONArray googleDirectionsJson)
     {
         HashMap<String,String> googleDirectionsMap = new HashMap<>();
@@ -41,6 +47,11 @@ class DataParser {
     }
 
 
+    /**
+     * This retrieves a single place
+     * @param googlePlaceJson
+     * @return
+     */
     private HashMap<String, String> getPlace(JSONObject googlePlaceJson)
     {
         HashMap<String, String> googlePlacesMap = new HashMap<>();
@@ -85,8 +96,11 @@ class DataParser {
         return googlePlacesMap;
     }
 
-
-
+    /**
+     * This retrieves multiple places
+     * @param jsonArray
+     * @return
+     */
     private List<HashMap<String,String>> getPlaces(JSONArray jsonArray)
     {
         int count = jsonArray.length();
@@ -108,6 +122,9 @@ class DataParser {
 
     }
 
+    /**
+     * This parses the data gotten from getPlaces()
+     */
     public List<HashMap<String,String>> parse(String jsonData)
     {
         JSONArray jsonArray = null;
@@ -126,6 +143,11 @@ class DataParser {
         return getPlaces(jsonArray);
     }
 
+    /**
+     * This parses the directions gotten from getPaths()
+     * @param jsonData
+     * @return
+     */
     public String[] parseDirections(String jsonData)
     {
         JSONArray jsonArray = null;
@@ -140,6 +162,11 @@ class DataParser {
         return getPaths(jsonArray);
     }
 
+    /**
+     * This gets multiple paths via query
+     * @param googleStepsJson
+     * @return
+     */
     public String[] getPaths(JSONArray googleStepsJson )
     {
         int count = googleStepsJson.length();
@@ -157,6 +184,11 @@ class DataParser {
         return polylines;
     }
 
+    /**
+     * This get the JSON google path
+     * @param googlePathJson
+     * @return
+     */
     public String getPath(JSONObject googlePathJson)
     {
         String polyline = "";
