@@ -49,16 +49,16 @@ public class buildings extends AppCompatActivity {
 
 
 
-
-        PrimaryDrawerItem item1 = new PrimaryDrawerItem().withIdentifier(1).withName("Menu");
-        SecondaryDrawerItem item2 = new SecondaryDrawerItem().withIdentifier(2).withName("Professors");
+        PrimaryDrawerItem item1 = new PrimaryDrawerItem().withIdentifier(1).withName("Menu"); // Top menu bar
+        SecondaryDrawerItem item2 = new SecondaryDrawerItem().withIdentifier(2).withName("Professors"); //lower menu bar
         Toolbar toolbar = findViewById(R.id.toolbar);
 
         //Professor 'Drawer' contains professor names
 
 
-
-        //create the drawer and remember the 'Drawer' result object
+        /**
+         * create the drawer and remember the 'Drawer' result object
+         */
         com.mikepenz.materialdrawer.Drawer result = new DrawerBuilder()
                 .withActivity(this)
                 .withToolbar(toolbar)
@@ -66,7 +66,6 @@ public class buildings extends AppCompatActivity {
                         item1,
                         new DividerDrawerItem(),
                         item2
-                        //new SecondaryDrawerItem().withName("Buildings")
                 )
                 .withOnDrawerItemClickListener(new com.mikepenz.materialdrawer.Drawer.OnDrawerItemClickListener() {
                     @Override
@@ -74,8 +73,6 @@ public class buildings extends AppCompatActivity {
                        //do something with clicked item
 
                         setContentView(R.layout.professor_scroll);
-
-
                         return false;
                     }
                 })
@@ -124,7 +121,11 @@ public class buildings extends AppCompatActivity {
     }
 
 
-    //Up one floor
+    /**
+     * increases floor by 1, if not on top level
+     * changes floor plan to upper floor, if not on top level
+     * @param view
+     */
     public void Increase (View view) {
 
         if (floor == 5) return;
@@ -134,7 +135,12 @@ public class buildings extends AppCompatActivity {
 
 
     }
-    //Down one floor
+
+    /**
+     * decreases floor by 1, if not at the bottom level
+     * changes floor plan to lower floor, if not at the bottom level
+     * @param view
+     */
     public void Decrease (View view) {
         if (floor == 0)return; //bottom floor
         floor--;
@@ -154,12 +160,20 @@ public class buildings extends AppCompatActivity {
 
     }
 
+    /**
+     * back button to leave professor list, back to floor plans
+     * @param view
+     */
     public void backButton(View view){
 
         Intent intent = new Intent(buildings.this, buildings.class);
         startActivity(intent);
     }
 
+    /**
+     * opens floor of clicked professor
+     * @param view
+     */
     public void prof1Clicked(View view){
 
 

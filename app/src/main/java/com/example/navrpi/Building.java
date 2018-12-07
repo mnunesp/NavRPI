@@ -56,6 +56,12 @@ public class Building {
         this.lng = lng;
 
     }
+
+    /**
+     *
+     * @param buils, list of buildings
+     * @return string holding name of buildings, per line, excluding Walker.
+     */
     public static String getBuildings(ArrayList<Building> buils){
         String result = "";
         for (int i = 0; i < buils.size(); i++){

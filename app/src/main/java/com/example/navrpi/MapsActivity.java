@@ -679,12 +679,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 Toast.LENGTH_SHORT).show();
     }
 
+    /**
+     * changes activity to buildings, after clicking on a walker from building_scroll
+     * @param view
+     */
     public void walkerClicked(View view){
         Intent intent = new Intent(MapsActivity.this, buildings.class);
         intent.putExtra("buildingName","Walker");
         startActivity(intent);
     }
 
+    /**
+     * resets to MapActivity from buildings_scroll
+     * @param view
+     */
     public void backButton(View view){
 
         Intent intent = new Intent(MapsActivity.this, MapsActivity.class);
