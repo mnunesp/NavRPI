@@ -19,22 +19,16 @@ import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-import static android.os.Build.VERSION_CODES.P;
-import static com.example.navrpi.R.layout.drawerlayout;
-
-public class buildings extends AppCompatActivity {
+public class BuildingsActivity extends AppCompatActivity {
 
 
     PDFView pdfView;
     TextView showValue;
     String building;
-    String pdfstring;
+    String pdfString;
     int floor = 0;
     List<MapNode> nodes = new ArrayList<>();
 
@@ -50,17 +44,12 @@ public class buildings extends AppCompatActivity {
         final ProfessorDao pDao = ProfessorDatabase.getDatabase(getApplicationContext()).professorDao();
         ArrayList<Professor> profs = (ArrayList<Professor>) pDao.getAllProfessors();
 
-
-
         PrimaryDrawerItem item1 = new PrimaryDrawerItem().withIdentifier(1).withName("Menu");
         SecondaryDrawerItem item2 = new SecondaryDrawerItem().withIdentifier(2).withName("Professors");
         Toolbar toolbar = findViewById(R.id.toolbar);
 
-        //Professor 'Drawer' contains professor names
-
-
-
-        //create the drawer and remember the 'Drawer' result object
+        // Professor 'Drawer' contains professor names
+        // Create the drawer and remember the 'Drawer' result object
         com.mikepenz.materialdrawer.Drawer result = new DrawerBuilder()
                 .withActivity(this)
                 .withToolbar(toolbar)
@@ -83,15 +72,13 @@ public class buildings extends AppCompatActivity {
                 })
                 .build();
 
-
-
+        // Get correct pdf to display
         building = getIntent().getStringExtra("buildingName").toLowerCase();
 
         setContentView(R.layout.activity_buildings);
         pdfView = findViewById(R.id.pdfView);
-        pdfstring = building + ".pdf";
-        pdfView.fromAsset(pdfstring).pages(floor).load();
-
+        pdfString = building + ".pdf";
+        pdfView.fromAsset(pdfString).pages(floor).load();
 
         showValue = (TextView) findViewById(R.id.floor);
     }
@@ -103,30 +90,24 @@ public class buildings extends AppCompatActivity {
         NodeDao nDao = NodeDatabase.getDatabase(getApplicationContext()).nodeDao();
         VerticiesDao vDao = VerticiesDatabase.getDatabase(getApplicationContext()).VerticiesDao();
 
-
-
         nodes = nDao.searchBuildFloor(building);
-
-
-        Drawer d = new Drawer(buildings.this, (ArrayList<MapNode>) nodes, pdfView);
+        Drawer d = new Drawer(BuildingsActivity.this, (ArrayList<MapNode>) nodes, pdfView);
 
         OnDrawListener DrawL = d.createDrawListener(floor, vDao);
-
-        OnTapListener TapL = new OnTapListener() {
+        OnTapListener tapL = new OnTapListener() {
             @Override
             public boolean onTap(MotionEvent e) {
 
-                System.out.println("Test boy");
                 return true;
             }
         };
 
-        pdfView.fromAsset(pdfstring).pages(floor).onTap(TapL).onDraw(DrawL).load();
+        pdfView.fromAsset(pdfString).pages(floor).onTap(tapL).onDraw(DrawL).load();
 
     }
 
 
-    //Up one floor
+    // Up one floor
     public void Increase (View view) {
 
         if (floor == 5) return;
@@ -136,8 +117,9 @@ public class buildings extends AppCompatActivity {
 
 
     }
-    //Down one floor
+    // Down one floor
     public void Decrease (View view) {
+
         if (floor == 0)return; //bottom floor
         floor--;
         showValue.setText(Integer.toString(floor+1)); //counting starts at 0...
@@ -145,20 +127,19 @@ public class buildings extends AppCompatActivity {
 
     }
 
-
+    // Starts RoutePreviewActivity
     public void PreviewRoute (View view) {
 
-        Intent intent = new Intent(buildings.this, RoutePreviewActivity.class);
+        Intent intent = new Intent(BuildingsActivity.this, RoutePreviewActivity.class);
         intent.putExtra("building_name", building);
         intent.putExtra("building", building);
         startActivity(intent);
-
 
     }
 
     public void backButton(View view){
 
-        Intent intent = new Intent(buildings.this, buildings.class);
+        Intent intent = new Intent(BuildingsActivity.this, BuildingsActivity.class);
         startActivity(intent);
     }
 

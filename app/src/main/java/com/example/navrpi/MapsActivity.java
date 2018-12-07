@@ -2,7 +2,6 @@ package com.example.navrpi;
 
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
@@ -11,16 +10,12 @@ import android.location.Geocoder;
 import android.location.Location;
 
 import android.os.Build;
-import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -28,7 +23,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
@@ -49,8 +43,6 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
 import com.google.android.gms.maps.model.Polyline;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.model.DividerDrawerItem;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
@@ -61,7 +53,6 @@ import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 /** This Class is the backbone of the maps activity
  *  It oversees all tasks and evens which occur on the map
@@ -326,7 +317,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             case R.id.Inspect_Building: {
                 Log.d(Tag, "onCLick: clicked on Inspect Building");
-                Intent intent = new Intent(MapsActivity.this, buildings.class);
+                Intent intent = new Intent(MapsActivity.this, BuildingsActivity.class);
                 intent.putExtra("buildingName", (String)mMark.getTitle());
                 startActivity(intent);
             }
@@ -680,7 +671,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     public void walkerClicked(View view){
-        Intent intent = new Intent(MapsActivity.this, buildings.class);
+        Intent intent = new Intent(MapsActivity.this, BuildingsActivity.class);
+        intent.putExtra("buildingName", "Walker");
         startActivity(intent);
     }
 
