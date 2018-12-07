@@ -20,19 +20,20 @@ public class Drawer {
     private ArrayList<? extends MapNode> nodes;
     private List<Verticies> verts;
     private Context context;
-    private PDFView pview;
+    private PDFView pdfView;
 
     public Drawer(Context c, PDFView p) {
         context = c;
         nodes = new ArrayList<MapNode>();
         verts = new ArrayList<Verticies>();
-        pview = p;
+        pdfView = p;
     }
+
 
     public Drawer(Context c, ArrayList<? extends MapNode> n, PDFView p) {
         context = c;
         nodes = n;
-        pview = p;
+        pdfView = p;
         verts = new ArrayList<Verticies>();
 
     }
@@ -46,34 +47,34 @@ public class Drawer {
             public void onLayerDrawn(Canvas canvas, float pageWidth, float pageHeight, int displayedPage) {
                 //System.out.println("Testing");
                 //System.out.println("PageWidth: " + pageWidth + " pageHeight: " + pageHeight + " Page: " + displayedPage);
-                Paint dotcolor = new Paint();
-                Paint linecolor = new Paint();
+                Paint dotColor = new Paint();
+                Paint lineColor = new Paint();
 
-                dotcolor.setColor(Color.RED);
-                linecolor.setColor(Color.RED);
-                linecolor.setStrokeWidth(10);
+                dotColor.setColor(Color.RED);
+                lineColor.setColor(Color.RED);
+                lineColor.setStrokeWidth(10);
 
                 // Draw each node
                 for (int i = 0; i < nodes.size(); ++i) {
                     if (nodes.get(i).getFloor() == floor) {
 
                         // Calculate node positions based on current zoom
-                        float pdfzoom = pview.getZoom();
+                        float pdfZoom = pdfView.getZoom();
 
-                        float nodedrawpositionx = nodes.get(i).getX() * pdfzoom;
-                        float nodedrawpositiony = nodes.get(i).getY() * pdfzoom;
-                        float noderadius = 20;
+                        float nodeDrawPositionX = nodes.get(i).getX() * pdfZoom;
+                        float nodeDrawPositionY = nodes.get(i).getY() * pdfZoom;
+                        float nodeRadius = 20;
 
 
 
                         // Draw icons based on node type
                         if (nodes.get(i).getNodeType().equals("hallway")) {
-                            canvas.drawCircle(nodedrawpositionx, nodedrawpositiony, noderadius, dotcolor);
+                            canvas.drawCircle(nodeDrawPositionX, nodeDrawPositionY, nodeRadius, dotColor);
 
                         } else if (nodes.get(i).getNodeType().equals("bathroom")) {
-                            Bitmap temp_bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.restroom_icon_red);
+                            Bitmap tempBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.restroom_icon_red);
                             // icon 100px x 100px, -50 to center
-                            canvas.drawBitmap(temp_bitmap, nodedrawpositionx - 50, nodedrawpositiony - 50, dotcolor);
+                            canvas.drawBitmap(tempBitmap, nodeDrawPositionX - 50, nodeDrawPositionY - 50, dotColor);
                         }
 
                         // Draw lines between connecting nodes
@@ -82,17 +83,17 @@ public class Drawer {
 
                         for (Verticies vert : verts) {
 
-                            MapNode tempsource = new MapNode(vert.getSource());
-                            MapNode tempdest = new MapNode(vert.getDest());
+                            MapNode tempSource = new MapNode(vert.getSource());
+                            MapNode tempDest = new MapNode(vert.getDest());
 
                             // Only display vert if dest node is on same floor
-                            if (nodes.get(i).equals(tempsource) && nodes.contains(tempdest) &&
-                                    nodes.get(nodes.indexOf(tempdest)).getFloor() == floor) {
+                            if (nodes.get(i).equals(tempSource) && nodes.contains(tempDest) &&
+                                    nodes.get(nodes.indexOf(tempDest)).getFloor() == floor) {
 
-                                float adjacentposx = nodes.get(nodes.indexOf(tempdest)).getX() * pdfzoom;
-                                float adjacentposy = nodes.get(nodes.indexOf(tempdest)).getY() * pdfzoom;
-                                System.out.println("xpos: " + adjacentposx + " ypos: " + adjacentposy);
-                                canvas.drawLine(nodedrawpositionx, nodedrawpositiony, adjacentposx, adjacentposy, linecolor);
+                                float adjacentPosX = nodes.get(nodes.indexOf(tempDest)).getX() * pdfZoom;
+                                float adjacentPosY = nodes.get(nodes.indexOf(tempDest)).getY() * pdfZoom;
+                                System.out.println("xpos: " + adjacentPosX + " ypos: " + adjacentPosY);
+                                canvas.drawLine(nodeDrawPositionX, nodeDrawPositionY, adjacentPosX, adjacentPosY, lineColor);
                             }
 
                         }

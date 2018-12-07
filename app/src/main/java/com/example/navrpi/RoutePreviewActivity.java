@@ -23,8 +23,8 @@ public class RoutePreviewActivity extends AppCompatActivity {
     VerticiesDao vDao;
     PDFView pdfView;
 
-    ArrayList<RoutingMapNode> routenodes = new ArrayList<>();
-    ArrayList<MapNode> finalnodes = new ArrayList<>();
+    ArrayList<RoutingMapNode> routeNodes = new ArrayList<>();
+    ArrayList<MapNode> finalNodes = new ArrayList<>();
 
 
 
@@ -52,32 +52,31 @@ public class RoutePreviewActivity extends AppCompatActivity {
         nDao = NodeDatabase.getDatabase(getApplicationContext()).nodeDao();
         vDao = VerticiesDatabase.getDatabase(getApplicationContext()).VerticiesDao();
 
-        List<MapNode> dbnodes = nDao.getNodesByBuilding(building);
-        List<Verticies> dbverts = vDao.getAllEdges();
+        List<MapNode> dbNodes = nDao.getNodesByBuilding(building);
+        List<Verticies> dbVerts = vDao.getAllEdges();
 
 
 
         // Convert MapNodes into routing node for BuildingNavigator
         List<RoutingMapNode> mapNodes = new ArrayList<>();
-        for (MapNode n : dbnodes) {
+        for (MapNode n : dbNodes) {
             mapNodes.add(new RoutingMapNode(n.getX(), n.getY(), n.getFloor(),
                     n.getBuilding(), n.getNodeType()));
         }
 
         // Add verticies to the nodes in mapNodes
-        for (Verticies v : dbverts) {
-            RoutingMapNode tempsource = new RoutingMapNode(v.getSource());
-            RoutingMapNode tempdest = new RoutingMapNode(v.getDest());
+        for (Verticies v : dbVerts) {
+            RoutingMapNode tempSource = new RoutingMapNode(v.getSource());
+            RoutingMapNode tempDest = new RoutingMapNode(v.getDest());
 
-            if (mapNodes.contains(tempsource) && mapNodes.contains(tempdest)) {
-                mapNodes.get(mapNodes.indexOf(tempsource)).addAdjacentNode(mapNodes.get(mapNodes.indexOf(tempdest)), v.getDistance());
+            if (mapNodes.contains(tempSource) && mapNodes.contains(tempDest)) {
+                mapNodes.get(mapNodes.indexOf(tempSource)).addAdjacentNode(mapNodes.get(mapNodes.indexOf(tempDest)), v.getDistance());
             }
         }
 
         // Define start and destination nodes
         RoutingMapNode startNode = mapNodes.get(5);
         RoutingMapNode endNode = mapNodes.get(28);
-
 
         for (RoutingMapNode n : mapNodes) {
             System.out.println("Node " + n.getId() + " adjnodes: " + n.getAdjacentNodes().size());
@@ -87,31 +86,28 @@ public class RoutePreviewActivity extends AppCompatActivity {
         BuildingNavigator buildingNav = new BuildingNavigator();
         buildingNav.Navigate(startNode);
 
-        // Get final node path for display
-        routenodes.addAll(endNode.getShortestPath());
-
-        for (RoutingMapNode n : routenodes) {
-            finalnodes.add(new MapNode(n.getX(), n.getY(), n.getFloor(),
+        // Get final path for display and add to finalNodes
+        routeNodes.addAll(endNode.getShortestPath());
+        for (RoutingMapNode n : routeNodes) {
+            finalNodes.add(new MapNode(n.getX(), n.getY(), n.getFloor(),
                     n.getBuilding(), n.getNodeType()));
         }
-
-        
 
         // Draw the node path to pdfview
         Draw(floor);
     }
 
-
+    // Renders the current floor plan and nodes for RoutePreviewActivity
     private void Draw(int floor) {
 
-        Drawer d = new Drawer(RoutePreviewActivity.this, finalnodes, pdfView);
-        OnDrawListener DrawL = d.createDrawListener(floor, vDao);
+        Drawer d = new Drawer(RoutePreviewActivity.this, finalNodes, pdfView);
+        OnDrawListener drawL = d.createDrawListener(floor, vDao);
 
-        pdfView.fromAsset("walker.pdf").pages(floor).enableDoubletap(false).onDraw(DrawL).load();
+        pdfView.fromAsset("walker.pdf").pages(floor).enableDoubletap(false).onDraw(drawL).load();
 
     }
 
-    //Up one floor
+    // Up one floor
     public void Increase (View view) {
 
         if (floor == 5) return;
@@ -120,9 +116,9 @@ public class RoutePreviewActivity extends AppCompatActivity {
 
 
     }
-    //Down one floor
+    // Down one floor
     public void Decrease (View view) {
-        if (floor == 0)return; //bottom floor
+        if (floor == 0) return; //bottom floor
         floor--;
         Draw(floor);
 

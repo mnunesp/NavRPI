@@ -22,9 +22,10 @@ public class BuildingNavigator {
 
     public BuildingNavigator(String buildingName, LinkedList<RoutingMapNode> inputNodes) {
         currentBuilding = buildingName;
-        nodes = inputNodes; // TODO: Want to change to query DB
+        nodes = inputNodes;
     }
 
+    // Runs Dijkstra's algorithm
     public void Navigate(RoutingMapNode sourceNode) {
         sourceNode.setDistance(0);
 
@@ -53,6 +54,7 @@ public class BuildingNavigator {
 
     }
 
+    // Calculates minimum distance from a destination node to source node
     private void CalculateMinimumDistance(RoutingMapNode evaluationNode, Integer edgeWeigh, RoutingMapNode sourceNode) {
         Integer sourceDistance = sourceNode.getDistance();
         if (sourceDistance + edgeWeigh < evaluationNode.getDistance()) {
@@ -63,6 +65,7 @@ public class BuildingNavigator {
         }
     }
 
+    // Changes distance of a node if a shorter path is found
     private static RoutingMapNode getLowestDistanceNode(Set<RoutingMapNode> unsettledNodes) {
         RoutingMapNode lowestDistanceNode = null;
         int lowestDistance = Integer.MAX_VALUE;

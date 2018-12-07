@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".buildings">
+    tools:context=".BuildingsActivity">
 
     <!--<include-->
         <!--android:id="@+id/drawer_layout"-->
@@ -99,7 +99,7 @@
         android:id="@+id/drawer_layout"
         android:layout_width="match_parent" android:layout_height="match_parent"
         android:fitsSystemWindows="true"
-        tools:context=".buildings">
+        tools:context=".BuildingsActivity">
 
     <!-- Layout to contain contents of main body of screen (drawer will slide over this) -->
     <FrameLayout

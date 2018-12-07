@@ -19,22 +19,16 @@ import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-import static android.os.Build.VERSION_CODES.P;
-import static com.example.navrpi.R.layout.drawerlayout;
-
-public class buildings extends AppCompatActivity {
+public class BuildingsActivity extends AppCompatActivity {
 
 
     PDFView pdfView;
     TextView showValue;
     String building;
-    String pdfstring;
+    String pdfString;
     int floor = 0;
     List<MapNode> nodes = new ArrayList<>();
 
@@ -48,6 +42,7 @@ public class buildings extends AppCompatActivity {
         new DrawerBuilder().withActivity(this).build();
 
 
+<<<<<<< HEAD:app/src/main/java/com/example/navrpi/buildings.java
 
         PrimaryDrawerItem item1 = new PrimaryDrawerItem().withIdentifier(1).withName("Menu"); // Top menu bar
         SecondaryDrawerItem item2 = new SecondaryDrawerItem().withIdentifier(2).withName("Professors"); //lower menu bar
@@ -59,6 +54,14 @@ public class buildings extends AppCompatActivity {
         /**
          * create the drawer and remember the 'Drawer' result object
          */
+=======
+        PrimaryDrawerItem item1 = new PrimaryDrawerItem().withIdentifier(1).withName("Menu");
+        SecondaryDrawerItem item2 = new SecondaryDrawerItem().withIdentifier(2).withName("Professors");
+        Toolbar toolbar = findViewById(R.id.toolbar);
+
+        // Professor 'Drawer' contains professor names
+        // Create the drawer and remember the 'Drawer' result object
+>>>>>>> 139f7fa5b51c03682bf88c42b7f9f9138def23a9:app/src/main/java/com/example/navrpi/BuildingsActivity.java
         com.mikepenz.materialdrawer.Drawer result = new DrawerBuilder()
                 .withActivity(this)
                 .withToolbar(toolbar)
@@ -78,15 +81,13 @@ public class buildings extends AppCompatActivity {
                 })
                 .build();
 
-
-
+        // Get correct pdf to display
         building = getIntent().getStringExtra("buildingName").toLowerCase();
 
         setContentView(R.layout.activity_buildings);
         pdfView = findViewById(R.id.pdfView);
-        pdfstring = building + ".pdf";
-        pdfView.fromAsset(pdfstring).pages(floor).load();
-
+        pdfString = building + ".pdf";
+        pdfView.fromAsset(pdfString).pages(floor).load();
 
         showValue = (TextView) findViewById(R.id.floor);
     }
@@ -98,34 +99,32 @@ public class buildings extends AppCompatActivity {
         NodeDao nDao = NodeDatabase.getDatabase(getApplicationContext()).nodeDao();
         VerticiesDao vDao = VerticiesDatabase.getDatabase(getApplicationContext()).VerticiesDao();
 
-
-
         nodes = nDao.searchBuildFloor(building);
-
-
-        Drawer d = new Drawer(buildings.this, (ArrayList<MapNode>) nodes, pdfView);
+        Drawer d = new Drawer(BuildingsActivity.this, (ArrayList<MapNode>) nodes, pdfView);
 
         OnDrawListener DrawL = d.createDrawListener(floor, vDao);
-
-        OnTapListener TapL = new OnTapListener() {
+        OnTapListener tapL = new OnTapListener() {
             @Override
             public boolean onTap(MotionEvent e) {
 
-                System.out.println("Test boy");
                 return true;
             }
         };
 
-        pdfView.fromAsset(pdfstring).pages(floor).onTap(TapL).onDraw(DrawL).load();
+        pdfView.fromAsset(pdfString).pages(floor).onTap(tapL).onDraw(DrawL).load();
 
     }
 
 
+<<<<<<< HEAD:app/src/main/java/com/example/navrpi/buildings.java
     /**
      * increases floor by 1, if not on top level
      * changes floor plan to upper floor, if not on top level
      * @param view
      */
+=======
+    // Up one floor
+>>>>>>> 139f7fa5b51c03682bf88c42b7f9f9138def23a9:app/src/main/java/com/example/navrpi/BuildingsActivity.java
     public void Increase (View view) {
 
         if (floor == 5) return;
@@ -135,13 +134,18 @@ public class buildings extends AppCompatActivity {
 
 
     }
+<<<<<<< HEAD:app/src/main/java/com/example/navrpi/buildings.java
 
     /**
      * decreases floor by 1, if not at the bottom level
      * changes floor plan to lower floor, if not at the bottom level
      * @param view
      */
+=======
+    // Down one floor
+>>>>>>> 139f7fa5b51c03682bf88c42b7f9f9138def23a9:app/src/main/java/com/example/navrpi/BuildingsActivity.java
     public void Decrease (View view) {
+
         if (floor == 0)return; //bottom floor
         floor--;
         showValue.setText(Integer.toString(floor+1)); //counting starts at 0...
@@ -149,14 +153,13 @@ public class buildings extends AppCompatActivity {
 
     }
 
-
+    // Starts RoutePreviewActivity
     public void PreviewRoute (View view) {
 
-        Intent intent = new Intent(buildings.this, RoutePreviewActivity.class);
+        Intent intent = new Intent(BuildingsActivity.this, RoutePreviewActivity.class);
         intent.putExtra("building_name", building);
         intent.putExtra("building", building);
         startActivity(intent);
-
 
     }
 
@@ -166,7 +169,7 @@ public class buildings extends AppCompatActivity {
      */
     public void backButton(View view){
 
-        Intent intent = new Intent(buildings.this, buildings.class);
+        Intent intent = new Intent(BuildingsActivity.this, BuildingsActivity.class);
         startActivity(intent);
     }
 

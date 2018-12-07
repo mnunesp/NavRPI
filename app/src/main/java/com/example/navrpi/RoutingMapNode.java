@@ -3,6 +3,7 @@ package com.example.navrpi;
 import java.util.HashMap;
 import java.util.LinkedList;
 
+// Class is used to encapsulate MapNode for use in routing
 public class RoutingMapNode extends MapNode {
 
     private HashMap<RoutingMapNode, Integer> adjacentNodes = new HashMap<>();

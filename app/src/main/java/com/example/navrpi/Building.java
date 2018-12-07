@@ -11,7 +11,7 @@ import java.util.ArrayList;
 @Entity
 public class Building {
 
-    //simple class to hold buildings, that is their name and their location for the google maps marker
+    //simple class to hold BuildingsActivity, that is their name and their location for the google maps marker
 
     @NonNull
     @PrimaryKey
