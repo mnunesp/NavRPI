@@ -48,7 +48,7 @@
             android:name="org.apache.http.legacy"
             android:required="false" />
 
-        <activity android:name=".buildings" />
+        <activity android:name=".BuildingsActivity" />
         <activity
             android:name=".RoutePreviewActivity"
             android:label="@string/title_activity_route_preview_activty"
