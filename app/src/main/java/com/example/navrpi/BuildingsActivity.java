@@ -41,15 +41,27 @@ public class BuildingsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_buildings);
         new DrawerBuilder().withActivity(this).build();
 
-        final ProfessorDao pDao = ProfessorDatabase.getDatabase(getApplicationContext()).professorDao();
-        ArrayList<Professor> profs = (ArrayList<Professor>) pDao.getAllProfessors();
 
+<<<<<<< HEAD:app/src/main/java/com/example/navrpi/buildings.java
+
+        PrimaryDrawerItem item1 = new PrimaryDrawerItem().withIdentifier(1).withName("Menu"); // Top menu bar
+        SecondaryDrawerItem item2 = new SecondaryDrawerItem().withIdentifier(2).withName("Professors"); //lower menu bar
+        Toolbar toolbar = findViewById(R.id.toolbar);
+
+        //Professor 'Drawer' contains professor names
+
+
+        /**
+         * create the drawer and remember the 'Drawer' result object
+         */
+=======
         PrimaryDrawerItem item1 = new PrimaryDrawerItem().withIdentifier(1).withName("Menu");
         SecondaryDrawerItem item2 = new SecondaryDrawerItem().withIdentifier(2).withName("Professors");
         Toolbar toolbar = findViewById(R.id.toolbar);
 
         // Professor 'Drawer' contains professor names
         // Create the drawer and remember the 'Drawer' result object
+>>>>>>> 139f7fa5b51c03682bf88c42b7f9f9138def23a9:app/src/main/java/com/example/navrpi/BuildingsActivity.java
         com.mikepenz.materialdrawer.Drawer result = new DrawerBuilder()
                 .withActivity(this)
                 .withToolbar(toolbar)
@@ -57,7 +69,6 @@ public class BuildingsActivity extends AppCompatActivity {
                         item1,
                         new DividerDrawerItem(),
                         item2
-                        //new SecondaryDrawerItem().withName("Buildings")
                 )
                 .withOnDrawerItemClickListener(new com.mikepenz.materialdrawer.Drawer.OnDrawerItemClickListener() {
                     @Override
@@ -65,8 +76,6 @@ public class BuildingsActivity extends AppCompatActivity {
                        //do something with clicked item
 
                         setContentView(R.layout.professor_scroll);
-
-
                         return false;
                     }
                 })
@@ -107,7 +116,15 @@ public class BuildingsActivity extends AppCompatActivity {
     }
 
 
+<<<<<<< HEAD:app/src/main/java/com/example/navrpi/buildings.java
+    /**
+     * increases floor by 1, if not on top level
+     * changes floor plan to upper floor, if not on top level
+     * @param view
+     */
+=======
     // Up one floor
+>>>>>>> 139f7fa5b51c03682bf88c42b7f9f9138def23a9:app/src/main/java/com/example/navrpi/BuildingsActivity.java
     public void Increase (View view) {
 
         if (floor == 5) return;
@@ -117,7 +134,16 @@ public class BuildingsActivity extends AppCompatActivity {
 
 
     }
+<<<<<<< HEAD:app/src/main/java/com/example/navrpi/buildings.java
+
+    /**
+     * decreases floor by 1, if not at the bottom level
+     * changes floor plan to lower floor, if not at the bottom level
+     * @param view
+     */
+=======
     // Down one floor
+>>>>>>> 139f7fa5b51c03682bf88c42b7f9f9138def23a9:app/src/main/java/com/example/navrpi/BuildingsActivity.java
     public void Decrease (View view) {
 
         if (floor == 0)return; //bottom floor
@@ -137,12 +163,20 @@ public class BuildingsActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * back button to leave professor list, back to floor plans
+     * @param view
+     */
     public void backButton(View view){
 
         Intent intent = new Intent(BuildingsActivity.this, BuildingsActivity.class);
         startActivity(intent);
     }
 
+    /**
+     * opens floor of clicked professor
+     * @param view
+     */
     public void prof1Clicked(View view){
 
 
